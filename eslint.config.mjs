@@ -2,6 +2,7 @@ import nextPlugin from '@next/eslint-plugin-next'
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
+  react: true,
   plugins: { '@next/next': nextPlugin },
   rules: {
     ...nextPlugin.configs.recommended.rules,
