@@ -9,7 +9,7 @@ services:
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     # or set shared memory limit when deploy via swarm stack
-    #volumes:
+    # volumes:
     #  - type: tmpfs
     #    target: /dev/shm
     #    tmpfs:
@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: 123456
 
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
     volumes:
       - ./data:/var/lib/postgresql/data
