@@ -14,6 +14,12 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.2.79)(react@18.3.1)
+      '@trpc/client':
+        specifier: 11.0.0-rc.364
+        version: 11.0.0-rc.364(@trpc/server@11.0.0-rc.364)
+      '@trpc/server':
+        specifier: 11.0.0-rc.364
+        version: 11.0.0-rc.364
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -23,6 +29,9 @@ importers:
       drizzle-orm:
         specifier: ^0.30.10
         version: 0.30.10(@types/react@18.2.79)(pg@8.11.3)(postgres@3.4.4)(react@18.3.1)
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.30.10(@types/react@18.2.79)(pg@8.11.3)(postgres@3.4.4)(react@18.3.1))(zod@3.22.4)
       lucide-react:
         specifier: ^0.378.0
         version: 0.378.0(react@18.3.1)
@@ -44,6 +53,9 @@ importers:
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^2.16.1
@@ -714,6 +726,14 @@ packages:
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
 
+  '@trpc/client@11.0.0-rc.364':
+    resolution: {integrity: sha512-k9ZH7I0OOBFME9fZJ1JI0ZjvPEV64bvoT20kWHkFeMH5trJmK1tzcc/q7c7cLBY4pziLPqBDPFw2qax09vyRTg==}
+    peerDependencies:
+      '@trpc/server': 11.0.0-rc.364+d95fb467b
+
+  '@trpc/server@11.0.0-rc.364':
+    resolution: {integrity: sha512-sGlrb2jSCiU74TrJ+N+WxIcJIUDyo0WOy0y30vIArw6oHFXjeithgxjvIu+PbN+VWt/Gt4ee8kVhnmxCW4X/Qw==}
+
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
@@ -1357,6 +1377,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-zod@0.5.1:
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -3744,6 +3770,12 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.6.2
 
+  '@trpc/client@11.0.0-rc.364(@trpc/server@11.0.0-rc.364)':
+    dependencies:
+      '@trpc/server': 11.0.0-rc.364
+
+  '@trpc/server@11.0.0-rc.364': {}
+
   '@types/cookie@0.6.0': {}
 
   '@types/eslint@8.56.10':
@@ -4420,6 +4452,11 @@ snapshots:
       pg: 8.11.3
       postgres: 3.4.4
       react: 18.3.1
+
+  drizzle-zod@0.5.1(drizzle-orm@0.30.10(@types/react@18.2.79)(pg@8.11.3)(postgres@3.4.4)(react@18.3.1))(zod@3.22.4):
+    dependencies:
+      drizzle-orm: 0.30.10(@types/react@18.2.79)(pg@8.11.3)(postgres@3.4.4)(react@18.3.1)
+      zod: 3.22.4
 
   eastasianwidth@0.2.0: {}
 
