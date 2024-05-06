@@ -1,4 +1,5 @@
 import { TRPCError, initTRPC } from '@trpc/server'
+import { createCallerFactory } from '@trpc/server/unstable-core-do-not-import'
 import { getServerSession } from '@/server/auth'
 
 export async function createTRPCContext() {
@@ -38,3 +39,5 @@ export const testRouter = router({
 })
 
 export type TestRouter = typeof testRouter
+
+export const serverCaller = createCallerFactory()(testRouter)
