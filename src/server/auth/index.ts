@@ -6,7 +6,15 @@ import { db } from '@/server/db/db'
 
 export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db) as AuthOptions['adapter'],
-  // Configure one or more authentication providers
+  callbacks: {
+    async session({ session, user }) {
+      if (session.user && user)
+        session.user.id = user.id
+
+      return session
+    },
+  },
+
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
