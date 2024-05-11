@@ -65,8 +65,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-2">
-      <div>
-        <UploadButton uppy={uppy}></UploadButton>
+      <div className="flex justify-between items-center mb-4">
         <Button
           onClick={() => {
             uppy.upload()
@@ -74,6 +73,7 @@ export default function Home() {
         >
           Upload
         </Button>
+        <UploadButton uppy={uppy}></UploadButton>
       </div>
       {isPending && <div>Loading</div>}
       <Dropzone uppy={uppy}>
@@ -88,7 +88,7 @@ export default function Home() {
               {draging && (
                 <div className=" absolute inset-0 bg-secondary/30 flex justify-center items-center text-3xl">
                   Drop File Here to Upload
-                  </div>
+                </div>
               )}
               {fileList?.map((file) => {
                 const isImage
@@ -96,26 +96,26 @@ export default function Home() {
 
                 return (
                   <div
-                      key={file.id}
-                      className=" w-56 h-56 flex justify-center items-center border"
-                    >
-                      {isImage
-                        ? (
-                            <img
-                                src={file.url}
-                                alt={file.name}
-                              />
-                          )
-                        : (
-                            <Image
-                                src="/unknown-file-types.png"
-                                alt="unknow file type"
-                                width={100}
-                                height={100}
-                              >
-                              </Image>
-                          )}
-                    </div>
+                    key={file.id}
+                    className=" w-56 h-56 flex justify-center items-center border"
+                  >
+                    {isImage
+                      ? (
+                        <img
+                          src={file.url}
+                          alt={file.name}
+                        />
+                        )
+                      : (
+                        <Image
+                          src="/unknown-file-types.png"
+                          alt="unknow file type"
+                          width={100}
+                          height={100}
+                        >
+                        </Image>
+                        )}
+                  </div>
                 )
               })}
             </div>
