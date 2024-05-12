@@ -11,6 +11,7 @@ export function UploadButton({ uppy }: { uppy: Uppy }) {
         <PlusCircle />
       </Button>
       <input
+        ref={inputRef}
         type="file"
         className="fixed left-[-1000000px]"
         onChange={(e) => {
