@@ -35,7 +35,7 @@ export default function Home() {
   // const progress = useUppyState(uppy, s => s.totalProgress)
 
   useEffect(() => {
-    const handler: UploadSuccessCallback<{}> = (file, resp) => {
+    const handler: UploadSuccessCallback<object> = (file, resp) => {
       if (file) {
         trpcPureClient.file.saveFile.mutate({
           name: file.data instanceof File ? file.data.name : 'test',
