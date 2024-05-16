@@ -1,7 +1,7 @@
 'use client'
 
-import type { UploadSuccessCallback } from '@uppy/core'
-import { Uppy, UppyFile } from '@uppy/core'
+import type { UploadCallback, UploadSuccessCallback, UppyFile } from '@uppy/core'
+import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
@@ -31,8 +31,12 @@ export default function Home() {
     return uppy
   })
 
+  const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
+  const utils = trpcClientReact.useUtils()
   const files = useUppyState(uppy, s => Object.values(s.files))
   // const progress = useUppyState(uppy, s => s.totalProgress)
+  const [uploadingFileIDs, setUploadingFileIds] = useState<string[]>([])
+  const uppyFiles = useUppyState(uppy, s => s.files)
 
   useEffect(() => {
     const handler: UploadSuccessCallback<object> = (file, resp) => {
@@ -41,18 +45,37 @@ export default function Home() {
           name: file.data instanceof File ? file.data.name : 'test',
           path: resp.uploadURL ?? '',
           type: file.data.type,
+        }).then(resp => { 
+          utils.file.listFiles.setData(void 0, prev => { 
+            if (!prev) return prev
+            return [resp, ...prev]
+          })
         })
       }
     }
+
+    const uploadProgressHandler: UploadCallback = (data) => {
+      setUploadingFileIds(currentFile => [...currentFile, ...data.fileIDs])
+    }
+
+    const completeHandler = () => {
+      setUploadingFileIds([])
+    }
+
+    uppy.on('upload', uploadProgressHandler)
+
     uppy.on('upload-success', handler)
+
+    uppy.on('complete', completeHandler)
 
     return () => {
       uppy.off('upload-success', handler)
+      uppy.off('upload', uploadProgressHandler)
+      uppy.off('complete', completeHandler)
     }
   }, [uppy])
 
-  const { data: fileList, isPending }
-        = trpcClientReact.file.listFiles.useQuery()
+  
 
   usePasteFile({
     onFilesPaste: (files) => {
@@ -63,6 +86,8 @@ export default function Home() {
       )
     },
   })
+
+  // const uppyFiles = useUppyState(uppy, s => s.files)
 
   return (
     <div className="container mx-auto p-2">
@@ -91,10 +116,38 @@ export default function Home() {
                   Drop File Here to Upload
                 </div>
               )}
-              {fileList?.map((file) => {
-                const isImage
-                                    = file.contentType.startsWith('image')
 
+              {uploadingFileIDs.length > 0 && uploadingFileIDs.map((id) => {
+                const file = uppyFiles[id]
+                const isImage = file.data.type.startsWith('image')
+                const url = URL.createObjectURL(file.data)
+                return (
+                  <div
+                    key={file.id}
+                    className=" w-56 h-56 flex justify-center items-center border border-red-500"
+                  >
+                    {isImage
+                      ? (
+                        <img
+                          src={url}
+                          alt={file.name}
+                        />
+                        )
+                      : (
+                        <Image
+                          src="/unknown-file-types.png"
+                          alt="unknow file type"
+                          width={100}
+                          height={100}
+                        >
+                        </Image>
+                        )}
+                  </div>
+                )
+              }) }
+
+              {fileList?.map((file) => {
+                const isImage = file.contentType.startsWith('image')
                 return (
                   <div
                     key={file.id}
