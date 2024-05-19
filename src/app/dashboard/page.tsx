@@ -1,18 +1,17 @@
 'use client'
 
-import type { UploadCallback, UploadSuccessCallback, UppyFile } from '@uppy/core'
+import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
 import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { useUppyState } from './useUppyState'
-import { trpcClient, trpcClientReact, trpcPureClient } from '@/utils/api'
+import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 import { UploadButton } from '@/components/feature/UploadButton'
 import { Dropzone } from '@/components/feature/Dropzone'
-import { cn } from '@/lib/utils'
 import { usePasteFile } from '@/hooks/usePasteFile'
 import UploadPreview from '@/components/feature/UploadPreview'
+import FileList from '@/components/feature/FileList'
 
 export default function Home() {
   const [uppy] = useState(() => {
@@ -31,12 +30,11 @@ export default function Home() {
     return uppy
   })
 
-  const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
   const utils = trpcClientReact.useUtils()
   const files = useUppyState(uppy, s => Object.values(s.files))
   // const progress = useUppyState(uppy, s => s.totalProgress)
-  const [uploadingFileIDs, setUploadingFileIds] = useState<string[]>([])
-  const uppyFiles = useUppyState(uppy, s => s.files)
+  const [_, setUploadingFileIds] = useState<string[]>([])
+  // const uppyFiles = useUppyState(uppy, s => s.files)
 
   useEffect(() => {
     const handler: UploadSuccessCallback<object> = (file, resp) => {
@@ -45,9 +43,10 @@ export default function Home() {
           name: file.data instanceof File ? file.data.name : 'test',
           path: resp.uploadURL ?? '',
           type: file.data.type,
-        }).then(resp => { 
-          utils.file.listFiles.setData(void 0, prev => { 
-            if (!prev) return prev
+        }).then((resp) => {
+          utils.file.listFiles.setData(void 0, (prev) => {
+            if (!prev)
+              return prev
             return [resp, ...prev]
           })
         })
@@ -75,8 +74,6 @@ export default function Home() {
     }
   }, [uppy])
 
-  
-
   usePasteFile({
     onFilesPaste: (files) => {
       uppy.addFiles(
@@ -101,80 +98,24 @@ export default function Home() {
         </Button>
         <UploadButton uppy={uppy} />
       </div>
-      {isPending && <div>Loading</div>}
-      <Dropzone uppy={uppy}>
-        {(draging) => {
-          return (
-            <div
-              className={cn(
-                'flex flex-wrap gap-4 relative',
-                draging && ' border border-dashed',
-              )}
-            >
-              {draging && (
-                <div className=" absolute inset-0 bg-secondary/30 flex justify-center items-center text-3xl">
-                  Drop File Here to Upload
-                </div>
-              )}
 
-              {uploadingFileIDs.length > 0 && uploadingFileIDs.map((id) => {
-                const file = uppyFiles[id]
-                const isImage = file.data.type.startsWith('image')
-                const url = URL.createObjectURL(file.data)
-                return (
-                  <div
-                    key={file.id}
-                    className=" w-56 h-56 flex justify-center items-center border border-red-500"
-                  >
-                    {isImage
-                      ? (
-                        <img
-                          src={url}
-                          alt={file.name}
-                        />
-                        )
-                      : (
-                        <Image
-                          src="/unknown-file-types.png"
-                          alt="unknow file type"
-                          width={100}
-                          height={100}
-                        >
-                        </Image>
-                        )}
-                  </div>
-                )
-              }) }
-
-              {fileList?.map((file) => {
-                const isImage = file.contentType.startsWith('image')
-                return (
-                  <div
-                    key={file.id}
-                    className=" w-56 h-56 flex justify-center items-center border"
-                  >
-                    {isImage
-                      ? (
-                        <img
-                          src={file.url}
-                          alt={file.name}
-                        />
-                        )
-                      : (
-                        <Image
-                          src="/unknown-file-types.png"
-                          alt="unknow file type"
-                          width={100}
-                          height={100}
-                        >
-                        </Image>
-                        )}
-                  </div>
-                )
-              })}
-            </div>
-          )
-        }}
+      <Dropzone uppy={uppy} className="relative">
+        {
+          (draging) => {
+            return (
+              <>
+                {
+                  draging && (
+                    <div className=" absolute inset-0 bg-secondary/50 z-10 flex justify-center items-center text-3xl">
+                      Drop File Here to Upload
+                    </div>
+                  )
+                }
+                <FileList uppy={uppy} />
+              </>
+            )
+          }
+        }
       </Dropzone>
 
       {files.map((file) => {

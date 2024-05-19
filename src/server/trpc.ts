@@ -1,5 +1,4 @@
 import { TRPCError, initTRPC } from '@trpc/server'
-import { Session } from 'next-auth'
 import { getServerSession } from '@/server/auth'
 
 const t = initTRPC.context().create()

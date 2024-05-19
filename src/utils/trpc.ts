@@ -1,4 +1,4 @@
-import { TRPCError, initTRPC } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import { getServerSession } from '@/server/auth'
 
 export async function createTRPCContext() {

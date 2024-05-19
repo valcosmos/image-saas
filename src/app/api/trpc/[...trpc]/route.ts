@@ -1,8 +1,5 @@
-import { initTRPC } from '@trpc/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import type { NextRequest } from 'next/server'
-import { testRouter } from '@/utils/trpc'
-import { getServerSession } from '@/server/auth'
 import { appRouter } from '@/server/router'
 
 function handler(request: NextRequest) {

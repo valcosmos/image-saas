@@ -1,6 +1,5 @@
 import process from 'node:process'
 import z from 'zod'
-import { TRPCError } from '@trpc/server'
 import type {
   PutObjectCommandInput,
 } from '@aws-sdk/client-s3'

@@ -1,15 +1,7 @@
-import { redirect } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import AwsS3 from '@uppy/aws-s3'
-import Uppy from '@uppy/core'
-
 import UserInfo, { SessionProvider } from './UserInfo'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
-
-import { getServerSession } from '@/server/auth'
-import { trpcClient, trpcClientReact } from '@/utils/api'
 
 export default function Home() {
   // const { data, isLoading } = trpcClientReact.hello.useQuery()
