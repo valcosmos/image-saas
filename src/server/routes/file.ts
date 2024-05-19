@@ -1,4 +1,5 @@
 import process from 'node:process'
+import { desc, lt, sql } from 'drizzle-orm'
 import z from 'zod'
 import type {
   PutObjectCommandInput,
@@ -9,7 +10,6 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { v4 as uuid } from 'uuid'
-import { desc } from 'drizzle-orm'
 import { files } from '../db/schema'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
@@ -80,7 +80,7 @@ export const fileRoutes = router({
           id: uuid(),
           path: url.pathname,
           url: url.toString(),
-          userId: session.user.id,
+          userId: session.user?.id,
           contentType: input.type,
         })
         .returning()
@@ -94,5 +94,24 @@ export const fileRoutes = router({
     })
 
     return result
+  }),
+  infinityQueryFiles: protectedProcedure.input(z.object({ cursor: z.object({ id: z.string(), createdAt: z.string() }).optional(), limit: z.number().default(10) })).query(async ({ input }) => {
+    const { cursor, limit } = input
+    // const result = await db.query.files.findMany({})
+    const result = await db
+      .select()
+      .from(files)
+      .limit(limit)
+      // .where(cursor ? lt(files.createdAt, new Date(cursor)) : undefined)
+      .where(cursor ? sql`("files"."created_at", "files"."id")<(${new Date(cursor.createdAt).toISOString()}, ${cursor.id})` : undefined)
+      .orderBy(desc(files.createdAt))
+
+    return {
+      items: result,
+      // nextCursor: result.length > 0 ? result[result.length - 1].createdAt : null,
+      nextCursor: result.length > 0
+        ? { createdAt: result[result.length - 1].createdAt!, id: result[result.length - 1].id }
+        : null,
+    }
   }),
 })

@@ -2,14 +2,28 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import type Uppy from '@uppy/core'
 import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
+import type { inferRouterOutputs } from '@trpc/server'
+import { Button } from '../ui/Button'
 import { LocalFileItem, RemoteFileItem } from './FileItem'
+import type { AppRouter } from '@/utils/api'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { cn } from '@/lib/utils'
 import { useUppyState } from '@/app/dashboard/useUppyState'
 
+type FileResult = inferRouterOutputs<AppRouter>['file']['listFiles']
+
 export default function FileList({ uppy }: { uppy: Uppy }) {
-  const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
+  // const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
+  const { data: infinityQueryData, isPending, fetchNextPage } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery({
+    limit: 1,
+  }, {
+    getNextPageParam: resp => resp.nextCursor,
+  })
+
+  const filesList = infinityQueryData ? infinityQueryData?.pages.reduce((result, page) => [...result, ...page.items], [] as FileResult) : []
+
   const utils = trpcClientReact.useUtils()
+  // const utils = trpcClientReact.useUtils()
   const [uploadingFileIDs, setUploadingFileIds] = useState<string[]>([])
   const uppyFiles = useUppyState(uppy, s => s.files)
 
@@ -74,7 +88,7 @@ export default function FileList({ uppy }: { uppy: Uppy }) {
           )
         }) }
 
-        {fileList?.map((file) => {
+        {filesList?.map((file) => {
           // const isImage = file.contentType.startsWith('image')
           return (
             <div
@@ -85,6 +99,8 @@ export default function FileList({ uppy }: { uppy: Uppy }) {
             </div>
           )
         })}
+
+        <Button onClick={() => fetchNextPage()}>Load Next Page</Button>
       </div>
     </>
   )

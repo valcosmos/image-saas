@@ -19,3 +19,5 @@ export const trpcPureClient = createTRPCClient<AppRouter>({
     }),
   ],
 })
+
+export { AppRouter }
