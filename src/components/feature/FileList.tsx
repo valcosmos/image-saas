@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import type Uppy from '@uppy/core'
 import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
+import { LocalFileItem, RemoteFileItem } from './FileItem'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { cn } from '@/lib/utils'
 import { useUppyState } from '@/app/dashboard/useUppyState'
@@ -61,56 +62,26 @@ export default function FileList({ uppy }: { uppy: Uppy }) {
 
         {uploadingFileIDs.length > 0 && uploadingFileIDs.map((id) => {
           const file = uppyFiles[id]
-          const isImage = file.data.type.startsWith('image')
-          const url = URL.createObjectURL(file.data)
+          // const isImage = file.data.type.startsWith('image')
+          // const url = URL.createObjectURL(file.data)
           return (
             <div
               key={file.id}
               className=" w-56 h-56 flex justify-center items-center border border-red-500"
             >
-              {isImage
-                ? (
-                  <img
-                    src={url}
-                    alt={file.name}
-                  />
-                  )
-                : (
-                  <Image
-                    src="/unknown-file-types.png"
-                    alt="unknow file type"
-                    width={100}
-                    height={100}
-                  >
-                  </Image>
-                  )}
+              <LocalFileItem file={file.data as File} />
             </div>
           )
         }) }
 
         {fileList?.map((file) => {
-          const isImage = file.contentType.startsWith('image')
+          // const isImage = file.contentType.startsWith('image')
           return (
             <div
               key={file.id}
               className=" w-56 h-56 flex justify-center items-center border"
             >
-              {isImage
-                ? (
-                  <img
-                    src={file.url}
-                    alt={file.name}
-                  />
-                  )
-                : (
-                  <Image
-                    src="/unknown-file-types.png"
-                    alt="unknow file type"
-                    width={100}
-                    height={100}
-                  >
-                  </Image>
-                  )}
+              <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name} />
             </div>
           )
         })}

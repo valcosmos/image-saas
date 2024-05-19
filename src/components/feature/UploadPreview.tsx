@@ -5,6 +5,7 @@ import { DialogTitle } from '@radix-ui/react-dialog'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Dialog, DialogContent, DialogFooter } from '../ui/Dialog'
 import { Button } from '../ui/Button'
+import { LocalFileItem } from './FileItem'
 import { useUppyState } from '@/app/dashboard/useUppyState'
 
 export default function UploadPreview({ uppy }: { uppy: Uppy }) {
@@ -16,7 +17,7 @@ export default function UploadPreview({ uppy }: { uppy: Uppy }) {
   const file = files[index]
   if (!file)
     return null
-  const isImage = file.data.type.startsWith('image')
+  // const isImage = file.data.type.startsWith('image')
 
   const clear = () => {
     files.forEach(file => uppy.removeFile(file.id))
@@ -43,22 +44,7 @@ export default function UploadPreview({ uppy }: { uppy: Uppy }) {
             key={file.id}
             className="w-56 h-56 flex justify-center items-center"
           >
-            {isImage
-              ? (
-                <img
-                  src={URL.createObjectURL(file.data)}
-                  alt={file.name}
-                />
-                )
-              : (
-                <Image
-                  src="/unknown-file-types.png"
-                  alt="unknow file type"
-                  width={100}
-                  height={100}
-                >
-                </Image>
-                )}
+            <LocalFileItem file={file.data as File} />
           </div>
           <Button
             variant="ghost"
