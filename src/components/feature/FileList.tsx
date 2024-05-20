@@ -10,13 +10,15 @@ import type { AppRouter } from '@/utils/api'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { cn } from '@/lib/utils'
 import { useUppyState } from '@/app/dashboard/useUppyState'
+import type { FileOrderByColumn } from '@/server/routes/file'
 
 type FileResult = inferRouterOutputs<AppRouter>['file']['listFiles']
 
-export default function FileList({ uppy }: { uppy: Uppy }) {
+export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileOrderByColumn }) {
   // const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
   const { data: infinityQueryData, isPending, fetchNextPage } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery({
     limit: 1,
+    orderBy,
   }, {
     getNextPageParam: resp => resp.nextCursor,
   })

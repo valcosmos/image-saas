@@ -4,6 +4,7 @@ import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
 import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
 import { useEffect, useState } from 'react'
+import { MoveDown, MoveUp } from 'lucide-react'
 import { useUppyState } from './useUppyState'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
@@ -12,6 +13,7 @@ import { Dropzone } from '@/components/feature/Dropzone'
 import { usePasteFile } from '@/hooks/usePasteFile'
 import UploadPreview from '@/components/feature/UploadPreview'
 import FileList from '@/components/feature/FileList'
+import type { FileOrderByColumn } from '@/server/routes/file'
 
 export default function Home() {
   const [uppy] = useState(() => {
@@ -86,15 +88,23 @@ export default function Home() {
 
   // const uppyFiles = useUppyState(uppy, s => s.files)
 
+  const [orderBy, setOrderBy] = useState<Exclude<FileOrderByColumn, undefined>>({ field: 'createdAt', order: 'desc' })
   return (
     <div className="mx-auto h-screen">
       <div className="container flex justify-between items-center mb-4 h-[60px]">
-        <Button
+        {/* <Button
           onClick={() => {
             uppy.upload()
           }}
         >
           Upload
+        </Button> */}
+        <Button onClick={() => {
+          setOrderBy(current => ({ ...current, order: current?.order === 'asc' ? 'desc' : 'asc' }))
+        }}
+        >
+          Created At
+          { orderBy.order === 'desc' ? <MoveUp /> : <MoveDown /> }
         </Button>
         <UploadButton uppy={uppy} />
       </div>
@@ -111,7 +121,7 @@ export default function Home() {
                     </div>
                   )
                 }
-                <FileList uppy={uppy} />
+                <FileList orderBy={orderBy} uppy={uppy} />
               </>
             )
           }

@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { desc, lt, sql } from 'drizzle-orm'
+import { asc, desc, lt, sql } from 'drizzle-orm'
 import z from 'zod'
 import type {
   PutObjectCommandInput,
@@ -13,10 +13,15 @@ import { v4 as uuid } from 'uuid'
 import { files } from '../db/schema'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
+import { filesCanOrderByColumns } from '../db/validate-schema'
 
 const bucket = process.env.BUCKET
 const apiEndpoint = process.env.API_END_POINT
 const region = process.env.REGION
+
+const fileOrderByColumnSchema = z.object({ field: filesCanOrderByColumns.keyof(), order: z.enum(['desc', 'asc']) }).optional()
+
+export type FileOrderByColumn = z.infer<typeof fileOrderByColumnSchema>
 
 export const fileRoutes = router({
   createPresignedUrl: protectedProcedure
@@ -95,17 +100,23 @@ export const fileRoutes = router({
 
     return result
   }),
-  infinityQueryFiles: protectedProcedure.input(z.object({ cursor: z.object({ id: z.string(), createdAt: z.string() }).optional(), limit: z.number().default(10) })).query(async ({ input }) => {
-    const { cursor, limit } = input
+  infinityQueryFiles: protectedProcedure.input(z.object({
+    cursor: z.object({ id: z.string(), createdAt: z.string() }).optional(),
+    limit: z.number().default(10),
+    orderBy: fileOrderByColumnSchema,
+  })).query(async ({ input }) => {
+    const { cursor, limit, orderBy = { field: 'createdAt', order: 'desc' } } = input
     // const result = await db.query.files.findMany({})
-    const result = await db
+    const statement = db
       .select()
       .from(files)
       .limit(limit)
       // .where(cursor ? lt(files.createdAt, new Date(cursor)) : undefined)
       .where(cursor ? sql`("files"."created_at", "files"."id")<(${new Date(cursor.createdAt).toISOString()}, ${cursor.id})` : undefined)
-      .orderBy(desc(files.createdAt))
+      // .orderBy(desc(files.createdAt))
 
+    statement.orderBy(orderBy.order === 'desc' ? desc(files[orderBy.field]) : asc(files[orderBy.field]))
+    const result = await statement
     return {
       items: result,
       // nextCursor: result.length > 0 ? result[result.length - 1].createdAt : null,
