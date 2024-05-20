@@ -1,9 +1,10 @@
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type Uppy from '@uppy/core'
 import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
 import type { inferRouterOutputs } from '@trpc/server'
 import { Button } from '../ui/Button'
+import { ScrollArea } from '../ui/ScrollArea'
 import { LocalFileItem, RemoteFileItem } from './FileItem'
 import type { AppRouter } from '@/utils/api'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
@@ -35,10 +36,17 @@ export default function FileList({ uppy }: { uppy: Uppy }) {
           path: resp.uploadURL ?? '',
           type: file.data.type,
         }).then((resp) => {
-          utils.file.listFiles.setData(void 0, (prev) => {
+          utils.file.infinityQueryFiles.setInfiniteData({ limit: 10 }, (prev) => {
             if (!prev)
               return prev
-            return [resp, ...prev]
+            return {
+              ...prev,
+              pages: prev.pages.map((page, index) => {
+                if (index === 0)
+                  return { ...page, items: [resp, ...page.items] }
+                return page
+              }),
+            }
           })
         })
       }
@@ -65,15 +73,29 @@ export default function FileList({ uppy }: { uppy: Uppy }) {
     }
   }, [uppy, utils])
 
-  return (
-    <>
-      {isPending && <div>Loading</div>}
-      <div
-        className={cn(
-          'flex flex-wrap gap-4 relative',
-        )}
-      >
+  // --------------- intersection
 
+  const bottomRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (bottomRef.current) {
+      const observer = new IntersectionObserver(() => {
+        fetchNextPage()
+      }, { threshold: 0.1 })
+
+      observer.observe(bottomRef.current)
+      const element = bottomRef.current
+
+      return () => {
+        observer.unobserve(element)
+        observer.disconnect()
+      }
+    }
+  }, [])
+
+  return (
+    <ScrollArea>
+      {isPending && <div>Loading</div>}
+      <div className={cn('flex flex-wrap justify-center gap-4 relative container')}>
         {uploadingFileIDs.length > 0 && uploadingFileIDs.map((id) => {
           const file = uppyFiles[id]
           // const isImage = file.data.type.startsWith('image')
@@ -93,15 +115,18 @@ export default function FileList({ uppy }: { uppy: Uppy }) {
           return (
             <div
               key={file.id}
-              className=" w-56 h-56 flex justify-center items-center border"
+              className="w-56 h-80 flex justify-center items-center border"
             >
               <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name} />
             </div>
           )
         })}
 
-        <Button onClick={() => fetchNextPage()}>Load Next Page</Button>
       </div>
-    </>
+      <div ref={bottomRef} className={cn('justify-center p-8 hidden', FileList.length > 0 && 'flex')}>
+        <Button variant="ghost" onClick={() => fetchNextPage()}>Load Next Page</Button>
+      </div>
+
+    </ScrollArea>
   )
 }

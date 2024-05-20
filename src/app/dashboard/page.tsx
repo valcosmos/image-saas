@@ -87,8 +87,8 @@ export default function Home() {
   // const uppyFiles = useUppyState(uppy, s => s.files)
 
   return (
-    <div className="container mx-auto p-2">
-      <div className="flex justify-between items-center mb-4">
+    <div className="mx-auto h-screen">
+      <div className="container flex justify-between items-center mb-4 h-[60px]">
         <Button
           onClick={() => {
             uppy.upload()
@@ -99,7 +99,7 @@ export default function Home() {
         <UploadButton uppy={uppy} />
       </div>
 
-      <Dropzone uppy={uppy} className="relative">
+      <Dropzone uppy={uppy} className="relative h-[calc(100% - 60px)]">
         {
           (draging) => {
             return (
