@@ -6,6 +6,7 @@ import type { inferRouterOutputs } from '@trpc/server'
 import { Button } from '../ui/Button'
 import { ScrollArea } from '../ui/ScrollArea'
 import { LocalFileItem, RemoteFileItem } from './FileItem'
+import { DeleteFile } from './FileItemAction'
 import type { AppRouter } from '@/utils/api'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { cn } from '@/lib/utils'
@@ -15,13 +16,17 @@ import type { FileOrderByColumn } from '@/server/routes/file'
 type FileResult = inferRouterOutputs<AppRouter>['file']['listFiles']
 
 export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileOrderByColumn }) {
-  // const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
-  const { data: infinityQueryData, isPending, fetchNextPage } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery({
-    limit: 1,
+  const queryKey = {
+    limit: 10,
     orderBy,
-  }, {
-    getNextPageParam: resp => resp.nextCursor,
-  })
+  }
+  // const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
+  const { data: infinityQueryData, isPending, fetchNextPage } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
+    queryKey,
+    {
+      getNextPageParam: resp => resp.nextCursor,
+    },
+  )
 
   const filesList = infinityQueryData ? infinityQueryData?.pages.reduce((result, page) => [...result, ...page.items], [] as FileResult) : []
 
@@ -38,7 +43,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
           path: resp.uploadURL ?? '',
           type: file.data.type,
         }).then((resp) => {
-          utils.file.infinityQueryFiles.setInfiniteData({ limit: 10 }, (prev) => {
+          utils.file.infinityQueryFiles.setInfiniteData(queryKey, (prev) => {
             if (!prev)
               return prev
             return {
@@ -94,6 +99,21 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
     }
   }, [])
 
+  const handleFileDelete = (id: string) => {
+    utils.file.infinityQueryFiles.setInfiniteData(queryKey, (prev) => {
+      if (!prev)
+        return prev
+      return {
+        ...prev,
+        pages: prev.pages.map((page, index) => {
+          if (index === 0)
+            return { ...page, items: page.items.filter(item => item.id !== id) }
+          return page
+        }),
+      }
+    })
+  }
+
   return (
     <ScrollArea>
       {isPending && <div>Loading</div>}
@@ -117,8 +137,9 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
           return (
             <div
               key={file.id}
-              className="w-56 h-80 flex justify-center items-center border"
+              className="relative w-56 h-80 flex justify-center items-center border"
             >
+              <div className="absolute inset-0 bg-background/30 justify-center items-center flex opacity-0 transition-all hover:opacity-100"><DeleteFile onDeleteSuccess={handleFileDelete} fileId={file.id} /></div>
               <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name} />
             </div>
           )

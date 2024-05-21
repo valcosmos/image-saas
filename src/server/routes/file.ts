@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { asc, desc, lt, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, isNull, lt, sql } from 'drizzle-orm'
 import z from 'zod'
 import type {
   PutObjectCommandInput,
@@ -107,12 +107,15 @@ export const fileRoutes = router({
   })).query(async ({ input }) => {
     const { cursor, limit, orderBy = { field: 'createdAt', order: 'desc' } } = input
     // const result = await db.query.files.findMany({})
+
+    const deleteFilter = isNull(files.deletedAt)
+
     const statement = db
       .select()
       .from(files)
       .limit(limit)
       // .where(cursor ? lt(files.createdAt, new Date(cursor)) : undefined)
-      .where(cursor ? sql`("files"."created_at", "files"."id")<(${new Date(cursor.createdAt).toISOString()}, ${cursor.id})` : undefined)
+      .where(cursor ? and(sql`("files"."created_at", "files"."id")<(${new Date(cursor.createdAt).toISOString()}, ${cursor.id})`, deleteFilter) : deleteFilter)
       // .orderBy(desc(files.createdAt))
 
     statement.orderBy(orderBy.order === 'desc' ? desc(files[orderBy.field]) : asc(files[orderBy.field]))
@@ -124,5 +127,9 @@ export const fileRoutes = router({
         ? { createdAt: result[result.length - 1].createdAt!, id: result[result.length - 1].id }
         : null,
     }
+  }),
+
+  deleteFile: protectedProcedure.input(z.string()).mutation(async ({ input }) => {
+    return db.update(files).set({ deletedAt: new Date() }).where(eq(files.id, input))
   }),
 })
