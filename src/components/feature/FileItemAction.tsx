@@ -1,5 +1,6 @@
 import React from 'react'
-import { Trash2 } from 'lucide-react'
+import { Copy, Trash2 } from 'lucide-react'
+import copy from 'copy-to-clipboard'
 import { Button } from '../ui/Button'
 import { trpcClientReact } from '@/utils/api'
 
@@ -17,4 +18,8 @@ export function DeleteFile({ fileId, onDeleteSuccess }: { fileId: string, onDele
       <Trash2 />
     </Button>
   )
+}
+
+export function CopyUrl({ url }: { url: string }) {
+  return <Button variant="ghost" onClick={() => copy(url)}><Copy /></Button>
 }

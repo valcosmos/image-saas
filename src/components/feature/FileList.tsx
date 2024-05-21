@@ -6,7 +6,7 @@ import type { inferRouterOutputs } from '@trpc/server'
 import { Button } from '../ui/Button'
 import { ScrollArea } from '../ui/ScrollArea'
 import { LocalFileItem, RemoteFileItem } from './FileItem'
-import { DeleteFile } from './FileItemAction'
+import { CopyUrl, DeleteFile } from './FileItemAction'
 import type { AppRouter } from '@/utils/api'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { cn } from '@/lib/utils'
@@ -139,7 +139,10 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
               key={file.id}
               className="relative w-56 h-80 flex justify-center items-center border"
             >
-              <div className="absolute inset-0 bg-background/30 justify-center items-center flex opacity-0 transition-all hover:opacity-100"><DeleteFile onDeleteSuccess={handleFileDelete} fileId={file.id} /></div>
+              <div className="absolute inset-0 bg-background/30 justify-center items-center flex opacity-0 transition-all hover:opacity-100">
+                <CopyUrl url={file.url} />
+                <DeleteFile onDeleteSuccess={handleFileDelete} fileId={file.id} />
+              </div>
               <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name} />
             </div>
           )
