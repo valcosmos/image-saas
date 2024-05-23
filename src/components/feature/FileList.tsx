@@ -142,7 +142,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
                 <CopyUrl url={file.url} />
                 <DeleteFile onDeleteSuccess={handleFileDelete} fileId={file.id} />
               </div>
-              <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name} />
+              <RemoteFileItem contentType={file.contentType} id={file.id} name={file.name} />
             </div>
           )
         })}
