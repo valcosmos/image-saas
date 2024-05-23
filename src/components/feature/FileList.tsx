@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import type Uppy from '@uppy/core'
 import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'

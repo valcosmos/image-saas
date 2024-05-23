@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { and, asc, desc, eq, isNull, lt, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, isNull, sql } from 'drizzle-orm'
 import z from 'zod'
 import type {
   PutObjectCommandInput,

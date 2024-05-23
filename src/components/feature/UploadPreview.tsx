@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Image from 'next/image'
 import type Uppy from '@uppy/core'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
