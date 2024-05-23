@@ -21,7 +21,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
   }
   // const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
   const { data: infinityQueryData, isPending, fetchNextPage } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
-    queryKey,
+    { ...queryKey },
     {
       getNextPageParam: resp => resp.nextCursor,
     },
@@ -42,7 +42,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
           path: resp.uploadURL ?? '',
           type: file.data.type,
         }).then((resp) => {
-          utils.file.infinityQueryFiles.setInfiniteData(queryKey, (prev) => {
+          utils.file.infinityQueryFiles.setInfiniteData({ ...queryKey }, (prev) => {
             if (!prev)
               return prev
             return {
@@ -99,7 +99,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
   }, [])
 
   const handleFileDelete = (id: string) => {
-    utils.file.infinityQueryFiles.setInfiniteData(queryKey, (prev) => {
+    utils.file.infinityQueryFiles.setInfiniteData({ ...queryKey }, (prev) => {
       if (!prev)
         return prev
       return {

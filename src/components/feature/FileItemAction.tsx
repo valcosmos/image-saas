@@ -1,6 +1,7 @@
 import React from 'react'
 import { Copy, Trash2 } from 'lucide-react'
 import copy from 'copy-to-clipboard'
+import { toast } from 'sonner'
 import { Button } from '../ui/Button'
 import { trpcClientReact } from '@/utils/api'
 
@@ -11,6 +12,7 @@ export function DeleteFile({ fileId, onDeleteSuccess }: { fileId: string, onDele
 
   const handleRemoveFile = () => {
     deleteFile(fileId)
+    toast('Delete succeed')
   }
 
   return (
@@ -21,5 +23,15 @@ export function DeleteFile({ fileId, onDeleteSuccess }: { fileId: string, onDele
 }
 
 export function CopyUrl({ url }: { url: string }) {
-  return <Button variant="ghost" onClick={() => copy(url)}><Copy /></Button>
+  return (
+    <Button
+      variant="ghost"
+      onClick={() => {
+        copy(url)
+        toast('Url Copied')
+      }}
+    >
+      <Copy />
+    </Button>
+  )
 }
