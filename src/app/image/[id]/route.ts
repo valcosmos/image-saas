@@ -21,14 +21,8 @@ export async function GET(request: NextRequest, { params: { id } }: { params: { 
 
   const params: GetObjectCommandInput = {
     Bucket: bucket,
-    Key: file.path,
+    Key: decodeURIComponent(file.path),
   }
-
-  console.log('--->bucket', bucket)
-  console.log('--->apiEndpoint', apiEndpoint)
-  console.log('--->region', region)
-  console.log('--->COS_APP_ID', COS_APP_ID)
-  console.log('--->COS_APP_SECRET', COS_APP_SECRET)
 
   const s3Client = new S3Client({
     endpoint: apiEndpoint,
@@ -40,6 +34,7 @@ export async function GET(request: NextRequest, { params: { id } }: { params: { 
   })
 
   const command = new GetObjectCommand(params)
+
   const response = await s3Client.send(command)
 
   const byteArray = await response.Body?.transformToByteArray()
