@@ -6,7 +6,7 @@ import AWSS3 from '@uppy/aws-s3'
 import { useEffect, useState } from 'react'
 import { MoveDown, MoveUp } from 'lucide-react'
 import Link from 'next/link'
-import { useUppyState } from './useUppyState'
+import { useUppyState } from '../../useUppyState'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 import { UploadButton } from '@/components/feature/UploadButton'
@@ -16,7 +16,7 @@ import UploadPreview from '@/components/feature/UploadPreview'
 import FileList from '@/components/feature/FileList'
 import type { FileOrderByColumn } from '@/server/routes/file'
 
-export default function Home() {
+export default function AppPage({ params: { id: appId } }: { params: { id: string } }) {
   const [uppy] = useState(() => {
     const uppy = new Uppy()
     uppy.use(AWSS3, {
@@ -46,6 +46,7 @@ export default function Home() {
           name: file.data instanceof File ? file.data.name : 'test',
           path: resp.uploadURL ?? '',
           type: file.data.type,
+          appId,
         }).then((resp) => {
           utils.file.listFiles.setData(void 0, (prev) => {
             if (!prev)
@@ -122,7 +123,7 @@ export default function Home() {
                     </div>
                   )
                 }
-                <FileList orderBy={orderBy} uppy={uppy} />
+                <FileList appId={appId} orderBy={orderBy} uppy={uppy} />
               </>
             )
           }

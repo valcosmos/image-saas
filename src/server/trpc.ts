@@ -1,9 +1,10 @@
 import { TRPCError, initTRPC } from '@trpc/server'
+import { appRouter } from './router'
 import { getServerSession } from '@/server/auth'
 
 const t = initTRPC.context().create()
 
-const { router, procedure } = t
+const { router, procedure, createCallerFactory } = t
 
 export const withLoggerProcedure = procedure.use(async ({ next }) => {
   // const start = Date.now()
@@ -39,4 +40,4 @@ export const protectedProcedure = withLoggerProcedure
     })
   })
 
-export { router }
+export { router, createCallerFactory }

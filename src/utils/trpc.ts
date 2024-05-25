@@ -1,54 +1,56 @@
 import { initTRPC } from '@trpc/server'
 import { getServerSession } from '@/server/auth'
+import { appRouter } from '@/server/router'
+import { createCallerFactory } from '@/server/trpc'
 
-export async function createTRPCContext() {
-  const session = await getServerSession()
+// export async function createTRPCContext() {
+//   const session = await getServerSession()
 
-  return {
-    session,
-  }
-}
-
-const t = initTRPC.context<typeof createTRPCContext>().create()
-
-const { router, procedure, createCallerFactory } = t
-
-const middleware = t.middleware(async ({ next }) => {
-  // const start = Date.now()
-
-  const result = await next()
-
-  return result
-})
-
-// const checkLoginMiddleware = t.middleware(async ({ ctx, next }) => {
-//   if (!ctx.session?.user) {
-//     throw new TRPCError({
-//       code: 'FORBIDDEN',
-//     })
+//   return {
+//     session,
 //   }
+// }
 
-//   return next()
+// const t = initTRPC.context<typeof createTRPCContext>().create()
+
+// const { router, procedure, createCallerFactory } = t
+
+// const middleware = t.middleware(async ({ next }) => {
+//   // const start = Date.now()
+
+//   const result = await next()
+
+//   return result
 // })
 
-const loggedProcedure = procedure.use(middleware)
+// // const checkLoginMiddleware = t.middleware(async ({ ctx, next }) => {
+// //   if (!ctx.session?.user) {
+// //     throw new TRPCError({
+// //       code: 'FORBIDDEN',
+// //     })
+// //   }
 
-// const protectedProcedure = procedure.use(checkLoginMiddleware)
+// //   return next()
+// // })
 
-export const testRouter = router({
-  hello: loggedProcedure.query(async () => {
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(null)
-      }, 1000)
-    })
+// const loggedProcedure = procedure.use(middleware)
 
-    return {
-      hello: 'world',
-    }
-  }),
-})
+// // const protectedProcedure = procedure.use(checkLoginMiddleware)
 
-export type TestRouter = typeof testRouter
+// export const testRouter = router({
+//   hello: loggedProcedure.query(async () => {
+//     await new Promise((resolve) => {
+//       setTimeout(() => {
+//         resolve(null)
+//       }, 1000)
+//     })
 
-export const serverCaller = createCallerFactory(testRouter)
+//     return {
+//       hello: 'world',
+//     }
+//   }),
+// })
+
+// export type TestRouter = typeof testRouter
+
+export const serverCaller = createCallerFactory(appRouter)

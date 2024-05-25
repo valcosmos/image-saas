@@ -14,10 +14,11 @@ import type { FileOrderByColumn } from '@/server/routes/file'
 
 type FileResult = inferRouterOutputs<AppRouter>['file']['listFiles']
 
-export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileOrderByColumn }) {
+export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy: FileOrderByColumn, appId: string }) {
   const queryKey = {
     limit: 10,
     orderBy,
+    appId,
   }
   // const { data: fileList, isPending } = trpcClientReact.file.listFiles.useQuery()
   const { data: infinityQueryData, isPending, fetchNextPage } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
@@ -41,6 +42,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
           name: file.data instanceof File ? file.data.name : 'test',
           path: resp.uploadURL ?? '',
           type: file.data.type,
+          appId,
         }).then((resp) => {
           utils.file.infinityQueryFiles.setInfiniteData({ ...queryKey }, (prev) => {
             if (!prev)
