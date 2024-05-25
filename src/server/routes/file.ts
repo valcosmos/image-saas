@@ -71,6 +71,7 @@ export const fileRoutes = router({
         name: z.string(),
         path: z.string(),
         type: z.string(),
+        appId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -93,10 +94,10 @@ export const fileRoutes = router({
       return photo[0]
     }),
 
-  listFiles: protectedProcedure.query(async ({ ctx }) => {
+  listFiles: protectedProcedure.input(z.object({ appId: z.string() })).query(async ({ ctx, input }) => {
     const result = await db.query.files.findMany({
       orderBy: [desc(files.createdAt)],
-      where: (files, { eq }) => eq(files.userId, ctx.session.user.id),
+      where: (files, { eq }) => and(eq(files.userId, ctx.session.user.id), eq(files.appId, input.appId)),
     })
 
     return result
@@ -105,19 +106,21 @@ export const fileRoutes = router({
     cursor: z.object({ id: z.string(), createdAt: z.string() }).optional(),
     limit: z.number().default(10),
     orderBy: fileOrderByColumnSchema,
+    appId: z.string(),
   })).query(async ({ input, ctx }) => {
     const { cursor, limit, orderBy = { field: 'createdAt', order: 'desc' } } = input
     // const result = await db.query.files.findMany({})
 
     const deleteFilter = isNull(files.deletedAt)
     const userFilter = eq(files.userId, ctx.session.user?.id)
+    const appFilter = eq(files.appId, input.appId)
 
     const statement = db
       .select()
       .from(files)
       .limit(limit)
       // .where(cursor ? lt(files.createdAt, new Date(cursor)) : undefined)
-      .where(cursor ? and(sql`("files"."created_at", "files"."id")<(${new Date(cursor.createdAt).toISOString()}, ${cursor.id})`, deleteFilter, userFilter) : and(deleteFilter, userFilter))
+      .where(cursor ? and(sql`("files"."created_at", "files"."id")<(${new Date(cursor.createdAt).toISOString()}, ${cursor.id})`, deleteFilter, userFilter, appFilter) : and(deleteFilter, userFilter, appFilter))
       // .orderBy(desc(files.createdAt))
 
     statement.orderBy(orderBy.order === 'desc' ? desc(files[orderBy.field]) : asc(files[orderBy.field]))
