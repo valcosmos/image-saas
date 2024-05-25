@@ -1,5 +1,6 @@
 // import UserInfo, { SessionProvider } from './UserInfo'
 import { redirect } from 'next/navigation'
+import SubmitButton from './SubmitButton'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
@@ -8,7 +9,7 @@ import { createAppSchema } from '@/server/db/validate-schema'
 import { getServerSession } from '@/server/auth'
 import { serverCaller } from '@/utils/trpc'
 
-export default function Home() {
+export default function CreateApp() {
   // const { data, isLoading } = trpcClientReact.hello.useQuery()
   async function createApp(formData: FormData) {
     'use server'
@@ -23,6 +24,9 @@ export default function Home() {
       const newApp = await serverCaller({ session }).apps.createApp(input.data)
       redirect(`/dashboard/apps/${newApp.id}`)
     }
+    else {
+      throw input.error
+    }
   }
 
   return (
@@ -31,7 +35,7 @@ export default function Home() {
         <h1 className="text-center text-2xl font-bold">Create App</h1>
         <Input name="name" placeholder="App Name" />
         <Textarea name="description" placeholder="Description" />
-        <Button type="submit">Submit</Button>
+        <SubmitButton />
 
       </form>
       {/* <SessionProvider> */}

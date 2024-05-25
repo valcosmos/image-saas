@@ -14,4 +14,6 @@ export const fileSchema = createSelectSchema(files)
 
 export const filesCanOrderByColumns = fileSchema.pick({ createdAt: true, deletedAt: true })
 
-export const createAppSchema = createInsertSchema(apps)
+export const createAppSchema = createInsertSchema(apps, {
+  name: schema => schema.name.min(3),
+})
