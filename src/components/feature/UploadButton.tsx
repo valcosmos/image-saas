@@ -7,7 +7,7 @@ export function UploadButton({ uppy }: { uppy: Uppy }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   return (
     <>
-      <Button variant="ghost" onClick={() => { inputRef.current && inputRef.current.click() }}>
+      <Button variant="outline" onClick={() => { inputRef.current && inputRef.current.click() }}>
         <PlusCircle />
       </Button>
       <input

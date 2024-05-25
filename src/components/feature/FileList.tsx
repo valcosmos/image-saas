@@ -115,7 +115,7 @@ export default function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FileO
 
   return (
     <ScrollArea>
-      {isPending && <div>Loading</div>}
+      {isPending && <div className="text-center">Loading...</div>}
       <div className={cn('flex flex-wrap justify-center gap-4 relative container')}>
         {uploadingFileIDs.length > 0 && uploadingFileIDs.map((id) => {
           const file = uppyFiles[id]
