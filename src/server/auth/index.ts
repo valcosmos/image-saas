@@ -8,7 +8,7 @@ export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db) as AuthOptions['adapter'],
   callbacks: {
     async session({ session, user }) {
-      if (session.user && user)
+      if (session?.user && user)
         session.user.id = user.id
 
       return session

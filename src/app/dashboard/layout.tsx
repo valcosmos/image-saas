@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { getServerSession } from '@/server/auth'
-import { Button } from '@/components/ui/Button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/DropdownMenu'
 
