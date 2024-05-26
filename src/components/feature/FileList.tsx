@@ -150,7 +150,7 @@ export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy
         })}
 
       </div>
-      <div ref={bottomRef} className={cn('justify-center p-8 hidden', FileList.length > 0 && 'flex')}>
+      <div ref={bottomRef} className={cn('justify-center p-8 hidden', filesList.length > 0 && 'flex')}>
         <Button variant="ghost" onClick={() => fetchNextPage()}>Load Next Page</Button>
       </div>
 
