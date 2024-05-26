@@ -3,14 +3,35 @@ import {
   date,
   index,
   integer,
+  json,
   pgTable,
   primaryKey,
+  serial,
   text,
   timestamp,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccount } from 'next-auth/adapters'
+
+export interface S3StorageConfiguration {
+  bucket: string
+  region: string
+  accessKeyId: string
+  secretAccessKey: string
+  apiEndPoint?: string
+}
+
+export type StorageConfiguration = S3StorageConfiguration
+
+export const storageConfiguration = pgTable('storageConfiguration', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 100 }).notNull(),
+  userId: uuid('user_id').notNull(),
+  configuration: json('configuration').$type<S3StorageConfiguration>().notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
+  deletedAt: timestamp('deleted_at', { mode: 'date' }),
+})
 
 export const users = pgTable('user', {
   id: text('id').notNull().primaryKey(),
@@ -87,7 +108,7 @@ export const apps = pgTable('apps', {
   deletedAt: timestamp('deleted_at', { mode: 'date' }),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
   userId: text('user_id').notNull(),
-  // storageId: integer('storage_id'),
+  storageId: integer('storage_id'),
 })
 // app => ({ compoundNameKey: unique().on(app.id, app.name) })
 
@@ -98,10 +119,19 @@ export const filesRelations = relations(files, ({ one }) => ({
 
 export const appRelations = relations(apps, ({ one, many }) => ({
   user: one(users, { fields: [apps.userId], references: [users.id] }),
+  storage: one(storageConfiguration, { fields: [apps.storageId], references: [storageConfiguration.id] }),
   files: many(files),
 }))
 
 export const userRelation = relations(users, ({ many }) => ({
   files: many(files),
   apps: many(apps),
+  storages: many(storageConfiguration),
+}))
+
+export const storageConfigurationRelation = relations(storageConfiguration, ({ one }) => ({
+  user: one(users, {
+    fields: [storageConfiguration.userId],
+    references: [users.id],
+  }),
 }))
