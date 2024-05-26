@@ -22,10 +22,10 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
       shouldUseMultipart: false,
       getUploadParameters(file) {
         return trpcPureClient.file.createPresignedUrl.mutate({
-          filename:
-                        file.data instanceof File ? file.data.name : 'test',
+          filename: file.data instanceof File ? file.data.name : 'test',
           contentType: file.data.type || '',
           size: file.size,
+          appId,
         })
       },
     })

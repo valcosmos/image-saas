@@ -10,14 +10,15 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { v4 as uuid } from 'uuid'
+import { TRPCError } from '@trpc/server'
 import { files } from '../db/schema'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
 import { filesCanOrderByColumns } from '../db/validate-schema'
 
-const bucket = process.env.BUCKET
-const apiEndpoint = process.env.API_END_POINT
-const region = process.env.REGION
+// const bucket = process.env.BUCKET
+// const apiEndpoint = process.env.API_END_POINT
+// const region = process.env.REGION
 
 const fileOrderByColumnSchema = z.object({ field: filesCanOrderByColumns.keyof(), order: z.enum(['desc', 'asc']) }).optional()
 
@@ -30,28 +31,48 @@ export const fileRoutes = router({
         filename: z.string(),
         contentType: z.string(),
         size: z.number(),
+        appId: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const date = new Date()
 
       const isoString = date.toISOString()
 
       const dateString = isoString.split('T')[0]
 
+      const app = await db.query.apps.findFirst({
+        where: (apps, { eq }) => eq(apps.id, input.appId),
+        with: {
+          storage: true,
+        },
+      })
+
+      if (!app || !app.storage) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+        })
+      }
+
+      if (app.userId !== ctx.session.user.id)
+        throw new TRPCError({ code: 'FORBIDDEN' })
+
+      const storage = app.storage
+
       const params: PutObjectCommandInput = {
-        Bucket: bucket,
+        Bucket: storage.configuration.bucket,
         Key: `${dateString}/${input.filename.replaceAll(' ', '_')}`,
         ContentType: input.contentType,
         ContentLength: input.size,
       }
 
       const s3Client = new S3Client({
-        endpoint: apiEndpoint,
-        region,
+        endpoint: storage.configuration.apiEndpoint,
+        // endpoint: apiEndpoint,
+        region: storage.configuration.region,
         credentials: {
-          accessKeyId: process.env.COS_APP_ID as string,
-          secretAccessKey: process.env.COS_APP_SECRET as string,
+          accessKeyId: storage.configuration.accessKeyId,
+          secretAccessKey: storage.configuration.secretAccessKey,
         },
       })
 

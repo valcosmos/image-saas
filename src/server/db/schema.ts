@@ -19,7 +19,7 @@ export interface S3StorageConfiguration {
   region: string
   accessKeyId: string
   secretAccessKey: string
-  apiEndPoint?: string
+  apiEndpoint?: string
 }
 
 export type StorageConfiguration = S3StorageConfiguration
