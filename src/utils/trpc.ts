@@ -1,5 +1,3 @@
-import { initTRPC } from '@trpc/server'
-import { getServerSession } from '@/server/auth'
 import { appRouter } from '@/server/router'
 import { createCallerFactory } from '@/server/trpc'
 

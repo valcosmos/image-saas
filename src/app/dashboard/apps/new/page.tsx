@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation'
 import SubmitButton from './SubmitButton'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
-import { Button } from '@/components/ui/Button'
 import { createAppSchema } from '@/server/db/validate-schema'
 
 import { getServerSession } from '@/server/auth'
@@ -30,7 +29,7 @@ export default function CreateApp() {
   }
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="flex h-full justify-center items-center">
       <form action={createApp} className="w-full max-w-xl flex flex-col gap-4">
         <h1 className="text-center text-2xl font-bold">Create App</h1>
         <Input name="name" placeholder="App Name" />

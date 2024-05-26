@@ -1,5 +1,4 @@
 import { TRPCError, initTRPC } from '@trpc/server'
-import { appRouter } from './router'
 import { getServerSession } from '@/server/auth'
 
 const t = initTRPC.context().create()

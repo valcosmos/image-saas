@@ -14,12 +14,10 @@ export default async function DashboardLayout({ children, nav }: Readonly<{ chil
         <div className="container flex justify-end items-center h-full">
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button variant="ghost">
-                <Avatar>
-                  <AvatarImage src={session.user.image!} />
-                  <AvatarFallback>{ session.user?.name?.substring(0, 2) }</AvatarFallback>
-                </Avatar>
-              </Button>
+              <Avatar>
+                <AvatarImage src={session.user.image!} />
+                <AvatarFallback>{ session.user?.name?.substring(0, 2) }</AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>{ session.user.name }</DropdownMenuLabel>

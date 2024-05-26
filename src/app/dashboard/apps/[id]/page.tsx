@@ -1,13 +1,12 @@
 'use client'
 
-import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
 import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { MoveDown, MoveUp } from 'lucide-react'
 import Link from 'next/link'
 import { useUppyState } from '../../useUppyState'
-import { trpcClientReact, trpcPureClient } from '@/utils/api'
+import { trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 import { UploadButton } from '@/components/feature/UploadButton'
 import { Dropzone } from '@/components/feature/Dropzone'
@@ -33,50 +32,7 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
     return uppy
   })
 
-  const utils = trpcClientReact.useUtils()
   const files = useUppyState(uppy, s => Object.values(s.files))
-  // const progress = useUppyState(uppy, s => s.totalProgress)
-  const [_, setUploadingFileIds] = useState<string[]>([])
-  // const uppyFiles = useUppyState(uppy, s => s.files)
-
-  useEffect(() => {
-    const handler: UploadSuccessCallback<object> = (file, resp) => {
-      if (file) {
-        trpcPureClient.file.saveFile.mutate({
-          name: file.data instanceof File ? file.data.name : 'test',
-          path: resp.uploadURL ?? '',
-          type: file.data.type,
-          appId,
-        }).then((resp) => {
-          utils.file.listFiles.setData(void 0, (prev) => {
-            if (!prev)
-              return prev
-            return [resp, ...prev]
-          })
-        })
-      }
-    }
-
-    const uploadProgressHandler: UploadCallback = (data) => {
-      setUploadingFileIds(currentFile => [...currentFile, ...data.fileIDs])
-    }
-
-    const completeHandler = () => {
-      setUploadingFileIds([])
-    }
-
-    uppy.on('upload', uploadProgressHandler)
-
-    uppy.on('upload-success', handler)
-
-    uppy.on('complete', completeHandler)
-
-    return () => {
-      uppy.off('upload-success', handler)
-      uppy.off('upload', uploadProgressHandler)
-      uppy.off('complete', completeHandler)
-    }
-  }, [uppy])
 
   usePasteFile({
     onFilesPaste: (files) => {
@@ -108,7 +64,12 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
           Created At
           { orderBy.order === 'desc' ? <MoveUp /> : <MoveDown /> }
         </Button>
-        <UploadButton uppy={uppy} />
+        <div className="flex justify-center gap-2">
+          <UploadButton uppy={uppy} />
+          <Button asChild>
+            <Link href="/dashboard/apps/new">New App</Link>
+          </Button>
+        </div>
       </div>
 
       <Dropzone uppy={uppy} className="relative h-[calc(100% - 60px)]">
