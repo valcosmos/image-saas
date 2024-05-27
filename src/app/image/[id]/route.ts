@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { type NextRequest, NextResponse } from 'next/server'
 import type { GetObjectCommandInput } from '@aws-sdk/client-s3'
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
