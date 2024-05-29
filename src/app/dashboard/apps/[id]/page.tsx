@@ -3,7 +3,7 @@
 import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
 import { useState } from 'react'
-import { MoveDown, MoveUp } from 'lucide-react'
+import { MoveDown, MoveUp, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useUppyState } from '../../useUppyState'
 import { trpcPureClient } from '@/utils/api'
@@ -68,6 +68,11 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
           <UploadButton uppy={uppy} />
           <Button asChild>
             <Link href="/dashboard/apps/new">New App</Link>
+          </Button>
+          <Button asChild>
+            <Link href={`/dashboard/apps/${appId}/storage`}>
+              <Settings />
+            </Link>
           </Button>
         </div>
       </div>
