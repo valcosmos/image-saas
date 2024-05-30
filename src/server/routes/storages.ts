@@ -12,17 +12,21 @@ export const storagesRouter = router({
   createStorage: protectedProcedure.input(z.object({
     name: z.string().min(3).max(50),
     bucket: z.string(),
-    region: z.string(),
     accessKeyId: z.string(),
+    region: z.string(),
     secretAccessKey: z.string(),
     apiEndpoint: z.string().optional(),
   })).mutation(async ({ ctx, input }) => {
     const { name, ...configuration } = input
-    const result = await db.insert(storageConfiguration).values({
-      name: input.name,
-      configuration,
-      userId: ctx.session.user.id,
-    }).returning()
+
+    const result = await db
+      .insert(storageConfiguration)
+      .values({
+        name: input.name,
+        configuration,
+        userId: ctx.session.user.id,
+      })
+      .returning()
 
     return result[0]
   }),

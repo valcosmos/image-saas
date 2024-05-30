@@ -1,4 +1,5 @@
 'use client'
+
 import { Plus } from 'lucide-react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
@@ -9,12 +10,13 @@ import type { S3StorageConfiguration } from '@/server/db/schema'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
 
-export default function StoragePage({ params: { id } }: { params: { id: string } }) {
+export default function StorageFormPage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter()
 
   const { register, handleSubmit, formState: { errors } } = useForm<S3StorageConfiguration & { name: string }>()
 
-  const { mutate } = trpcClientReact.storages.createStorage.useMutation()
+  const { mutate, error } = trpcClientReact.storages.createStorage.useMutation()
+  console.log(error)
 
   const onSubmit: SubmitHandler<S3StorageConfiguration & { name: string }> = (data) => {
     mutate(data)
@@ -26,7 +28,7 @@ export default function StoragePage({ params: { id } }: { params: { id: string }
       <form className="flex flex-col gap-4 max-w-md mx-auto" onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Label>Name</Label>
-          <Input {...register('name', { required: 'Name is required' })} />
+          <Input {...register('name', { required: 'Name is required', minLength: { value: 3, message: 'Name must be at least 3 characters long' } })} />
           <span className="text-red-500">{ errors.name?.message }</span>
         </div>
         <div>
