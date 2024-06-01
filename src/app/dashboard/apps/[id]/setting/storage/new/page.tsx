@@ -19,7 +19,7 @@ export default function StorageFormPage({ params: { id } }: { params: { id: stri
 
   const onSubmit: SubmitHandler<S3StorageConfiguration & { name: string }> = (data) => {
     mutate(data)
-    router.push(`/dashboard/apps/${id}/storage`)
+    router.push(`/dashboard/apps/${id}/setting/storage`)
   }
   return (
     <div className="container pt-10">
