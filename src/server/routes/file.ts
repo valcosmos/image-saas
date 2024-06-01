@@ -10,7 +10,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { v4 as uuid } from 'uuid'
 import { TRPCError } from '@trpc/server'
-import { files } from '../db/schema'
+import { apps, files, storageConfiguration } from '../db/schema'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
 import { filesCanOrderByColumns } from '../db/validate-schema'
@@ -157,4 +157,5 @@ export const fileRoutes = router({
   deleteFile: protectedProcedure.input(z.string()).mutation(async ({ input }) => {
     return db.update(files).set({ deletedAt: new Date() }).where(eq(files.id, input))
   }),
+
 })

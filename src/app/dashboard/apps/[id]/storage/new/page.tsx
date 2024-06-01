@@ -15,8 +15,7 @@ export default function StorageFormPage({ params: { id } }: { params: { id: stri
 
   const { register, handleSubmit, formState: { errors } } = useForm<S3StorageConfiguration & { name: string }>()
 
-  const { mutate, error } = trpcClientReact.storages.createStorage.useMutation()
-  console.log(error)
+  const { mutate } = trpcClientReact.storages.createStorage.useMutation()
 
   const onSubmit: SubmitHandler<S3StorageConfiguration & { name: string }> = (data) => {
     mutate(data)
