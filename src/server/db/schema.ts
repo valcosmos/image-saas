@@ -33,6 +33,15 @@ export const storageConfiguration = pgTable('storageConfiguration', {
   deletedAt: timestamp('deleted_at', { mode: 'date' }),
 })
 
+export const apiKeys = pgTable('apiKeys', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  key: varchar('key', { length: 100 }).notNull(),
+  appId: varchar('appId', { length: 100 }).notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
+  deletedAt: timestamp('deleted_at', { mode: 'date' }),
+})
+
 export const users = pgTable('user', {
   id: text('id').notNull().primaryKey(),
   name: text('name'),
@@ -121,6 +130,7 @@ export const appRelations = relations(apps, ({ one, many }) => ({
   user: one(users, { fields: [apps.userId], references: [users.id] }),
   storage: one(storageConfiguration, { fields: [apps.storageId], references: [storageConfiguration.id] }),
   files: many(files),
+  apiKeys: many(apiKeys),
 }))
 
 export const userRelation = relations(users, ({ many }) => ({
@@ -134,4 +144,8 @@ export const storageConfigurationRelation = relations(storageConfiguration, ({ o
     fields: [storageConfiguration.userId],
     references: [users.id],
   }),
+}))
+
+export const apiKeysRelation = relations(apiKeys, ({ one }) => ({
+  app: one(apps, { fields: [apiKeys.appId], references: [apps.id] }),
 }))
