@@ -40,12 +40,13 @@ export const fileOpenRoutes = router({
 
       const dateString = isoString.split('T')[0]
 
-      const app = await db.query.apps.findFirst({
-        where: (apps, { eq }) => eq(apps.id, input.appId),
-        with: {
-          storage: true,
-        },
-      })
+      // const app = await db.query.apps.findFirst({
+      //   where: (apps, { eq }) => eq(apps.id, input.appId),
+      //   with: {
+      //     storage: true,
+      //   },
+      // })
+      const { app } = ctx
 
       if (!app || !app.storage) {
         throw new TRPCError({

@@ -50,7 +50,7 @@ export const withAppProcedure = withLoggerProcedure.use(async ({ next }) => {
     where: (apiKeys, { eq, and, isNotNull }) => and(eq(apiKeys.key, apiKey), isNotNull(apiKeys.deletedAt)),
     with: {
       app: {
-        with: { user: true },
+        with: { user: true, storage: true },
       },
     },
   })
