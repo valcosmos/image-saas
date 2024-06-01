@@ -1,0 +1,17 @@
+{
+  "name": "@image-saas/api",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "dist/index.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@trpc/client": "11.0.0-rc.364"
+
+  },
+  "dependencies": {
+    "@trpc/client": "11.0.0-rc.364"
+  }
+}
