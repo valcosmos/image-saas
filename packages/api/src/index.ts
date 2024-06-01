@@ -5,9 +5,22 @@ import type { OpenRouter } from './open-router-dts'
 export const apiClient = createTRPCClient<OpenRouter>({
   links: [
     httpBatchLink({
-      url: 'http://localhost:3000/api/trpc',
+      url: 'http://localhost:3000/api/open',
     }),
   ],
 })
+
+export function createApiClient({ apiKey }: { apiKey: string }) {
+  return createTRPCClient<OpenRouter>({
+    links: [
+      httpBatchLink({
+        url: 'http://localhost:3000/api/open',
+        headers: {
+          'api-key': apiKey,
+        },
+      }),
+    ],
+  })
+}
 
 export { OpenRouter }

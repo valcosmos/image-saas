@@ -2,7 +2,7 @@
   "name": "@image-saas/api",
   "type": "module",
   "version": "0.0.1",
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "files": ["dist"],
   "scripts": {
     "build": "tsc"
