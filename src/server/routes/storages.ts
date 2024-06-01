@@ -1,9 +1,7 @@
 import { z } from 'zod'
-import { and, eq } from 'drizzle-orm'
-import { TRPCError } from '@trpc/server'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
-import { apps, storageConfiguration } from '../db/schema'
+import { storageConfiguration } from '../db/schema'
 
 export const storagesRouter = router({
   listStorages: protectedProcedure.query(async ({ ctx }) => {

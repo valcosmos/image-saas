@@ -1,10 +1,8 @@
 import { z } from 'zod'
-import { and, eq } from 'drizzle-orm'
-import { TRPCError } from '@trpc/server'
 import { v4 as uuid } from 'uuid'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
-import { apiKeys, apps, storageConfiguration } from '../db/schema'
+import { apiKeys } from '../db/schema'
 
 export const apiKeysRouter = router({
   listApiKeys: protectedProcedure.input(z.object({ appId: z.string() })).query(async ({ input }) => {

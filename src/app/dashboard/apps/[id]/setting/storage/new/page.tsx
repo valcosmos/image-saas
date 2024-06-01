@@ -1,6 +1,5 @@
 'use client'
 
-import { Plus } from 'lucide-react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'

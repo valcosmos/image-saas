@@ -1,6 +1,5 @@
 'use client'
 import { Plus } from 'lucide-react'
-import { redirect } from 'next/navigation'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
