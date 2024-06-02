@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@image-saas/api": "workspace:*",
+    "@image-saas/upload-button": "workspace:*",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.11.2",
+    "preact": "^10.19.1",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
   },

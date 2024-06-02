@@ -1,14 +1,18 @@
 <template>
-  <div>
-
+  <div ref="containerRef">
+helo
   </div>
 </template>
 
 <script setup lang="ts">
 import { createApiClient } from '@image-saas/api'
-
+import { UploadButton } from '@image-saas/upload-button'
+import { render, h } from 'preact';
 // const apiKey = 'a06950db-5cc2-4a53-b8e5-5f53fccf7777'
-
+const containerRef = ref()
+watchEffect(() => {
+  if(containerRef.value)render(h(UploadButton), containerRef.value)
+})
 
 onMounted(async () => { 
   const tokenResp = await fetch('/api/test')
