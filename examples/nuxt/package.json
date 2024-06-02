@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@image-saas/api": "workspace:*",
+    "@image-saas/preact-vue-connect": "workspace:*",
     "@image-saas/upload-button": "workspace:*",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.11.2",

@@ -1,7 +1,11 @@
 import { useRef } from 'preact/hooks'
 import type { HTMLAttributes } from 'preact/compat'
 
-export function UploadButton({ onClick, ...props }: HTMLAttributes<HTMLButtonElement>) {
+interface CommonPreactComponentProps {
+  setChildrenContainer: (ele: HTMLElement | null) => void
+}
+
+export function UploadButton({ onClick, setChildrenContainer, children, ...props }: HTMLAttributes<HTMLButtonElement> & CommonPreactComponentProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleClick = (e: MouseEvent) => {
@@ -14,7 +18,7 @@ export function UploadButton({ onClick, ...props }: HTMLAttributes<HTMLButtonEle
 
   return (
     <>
-      <button {...props} onClick={handleClick}>Click me</button>
+      <button {...props} onClick={handleClick} ref={e => setChildrenContainer(e)}>{ children }</button>
       <input ref={inputRef} tabIndex={-1} type="file" style={{ opacity: 0, position: 'fixed', left: -10000000 }} />
     </>
   )
