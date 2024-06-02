@@ -14,7 +14,7 @@ export const apiKeysRouter = router({
     name: z.string().min(3).max(50),
     appId: z.string(),
   })).mutation(async ({ input }) => {
-    const result = await db.insert(apiKeys).values({ name: input.name, appId: input.appId, key: uuid() }).returning()
+    const result = await db.insert(apiKeys).values({ name: input.name, appId: input.appId, key: uuid(), clientId: uuid() }).returning()
     return result[0]
   }),
 })

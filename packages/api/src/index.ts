@@ -10,14 +10,18 @@ export const apiClient = createTRPCClient<OpenRouter>({
   ],
 })
 
-export function createApiClient({ apiKey }: { apiKey: string }) {
+export function createApiClient({ apiKey, signedToken }: { apiKey?: string, signedToken?: string }) {
+  const header: Record<string, string> = {}
+  if (apiKey)
+    header['api-key'] = apiKey
+  if (signedToken)
+    header['signed-token'] = signedToken
+
   return createTRPCClient<OpenRouter>({
     links: [
       httpBatchLink({
         url: 'http://localhost:3000/api/open',
-        headers: {
-          'api-key': apiKey,
-        },
+        headers: header,
       }),
     ],
   })
