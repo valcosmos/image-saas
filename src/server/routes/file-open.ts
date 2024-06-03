@@ -48,8 +48,6 @@ export const fileOpenRoutes = router({
       // })
       const { app } = ctx
 
-      console.log('=====>', app.userId, ctx.user.id)
-
       if (!app || !app.storage) {
         throw new TRPCError({
           code: 'BAD_REQUEST',

@@ -1,4 +1,3 @@
-import { createApiClient } from '@image-saas/api'
 import jwt from 'jsonwebtoken'
 
 const apiKey = '2cb8109b-3080-4db4-a269-8f22b049fb49'
