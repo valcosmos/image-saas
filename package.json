@@ -12,7 +12,7 @@
     "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
-    "@auth/drizzle-adapter": "^1.1.0",
+    "@auth/drizzle-adapter": "^1.2.0",
     "@aws-sdk/client-s3": "^3.588.0",
     "@aws-sdk/s3-request-presigner": "^3.588.0",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -34,7 +34,7 @@
     "drizzle-orm": "^0.31.0",
     "drizzle-zod": "^0.5.1",
     "jsonwebtoken": "^9.0.2",
-    "lucide-react": "^0.381.0",
+    "lucide-react": "^0.383.0",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
@@ -50,9 +50,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.19.2",
+    "@antfu/eslint-config": "^2.20.0",
     "@eslint-react/eslint-plugin": "^1.5.14",
-    "@types/jsonwebtoken": "^9.0.5",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -68,7 +68,7 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
-    "tsup": "^8.0.1",
+    "tsup": "^8.1.0",
     "typescript": "^5"
   }
 }
