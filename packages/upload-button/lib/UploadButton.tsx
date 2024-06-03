@@ -5,7 +5,7 @@ interface CommonPreactComponentProps {
   setChildrenContainer: (ele: HTMLElement | null) => void
 }
 
-export function UploadButton({ onClick, setChildrenContainer, children, ...props }: HTMLAttributes<HTMLButtonElement> & CommonPreactComponentProps) {
+export function UploadButton({ onClick, setChildrenContainer, onFileChosen, children, ...props }: HTMLAttributes<HTMLButtonElement> & CommonPreactComponentProps & { onFileChosen: (file: File[]) => void }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleClick = (e: MouseEvent) => {
@@ -19,7 +19,19 @@ export function UploadButton({ onClick, setChildrenContainer, children, ...props
   return (
     <>
       <button {...props} onClick={handleClick} ref={e => setChildrenContainer(e)}>{ children }</button>
-      <input ref={inputRef} tabIndex={-1} type="file" style={{ opacity: 0, position: 'fixed', left: -10000000 }} />
+      <input
+        ref={inputRef}
+        tabIndex={-1}
+        type="file"
+        onChange={(e) => {
+          const filesFormEvent = (e.target as HTMLInputElement).files
+          if (filesFormEvent) {
+            onFileChosen(Array.from(filesFormEvent))
+          }
+          // return filesFormEvent ? Array.from(filesFormEvent) : []
+        }}
+        style={{ opacity: 0, position: 'fixed', left: -10000000 }}
+      />
     </>
   )
 }
