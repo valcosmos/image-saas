@@ -244,14 +244,16 @@ importers:
         version: 3.4.27(typescript@5.4.5)
 
   packages/upload-button:
-    dependencies:
-      preact:
-        specifier: ^10.19.1
-        version: 10.19.2
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.6.0
         version: 2.8.2(@babel/core@7.24.6)(preact@10.19.2)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
+      '@uppy/core':
+        specifier: ^3.12.0
+        version: 3.12.0
+      preact:
+        specifier: ^10.19.1
+        version: 10.19.2
       typescript:
         specifier: ^5.2.2
         version: 5.4.5

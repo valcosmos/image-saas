@@ -1,11 +1,19 @@
+import type { MutableRef } from 'preact/hooks'
 import { useRef } from 'preact/hooks'
 import type { HTMLAttributes } from 'preact/compat'
+import type { Ref } from 'preact'
 
 interface CommonPreactComponentProps {
   setChildrenContainer: (ele: HTMLElement | null) => void
 }
 
-export function UploadButton({ onClick, setChildrenContainer, onFileChosen, children, ...props }: HTMLAttributes<HTMLButtonElement> & CommonPreactComponentProps & { onFileChosen: (file: File[]) => void }) {
+export type UploadButtonProps = HTMLAttributes<HTMLButtonElement> & CommonPreactComponentProps & {
+  onFileChosen: (file: File[]) => void
+  inputRef?: MutableRef<HTMLInputElement | null>
+
+}
+
+export function UploadButton({ onClick, setChildrenContainer, onFileChosen, children, inputRef: inputRefFromProps, ...props }: UploadButtonProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleClick = (e: MouseEvent) => {
@@ -20,7 +28,12 @@ export function UploadButton({ onClick, setChildrenContainer, onFileChosen, chil
     <>
       <button {...props} onClick={handleClick} ref={e => setChildrenContainer(e)}>{ children }</button>
       <input
-        ref={inputRef}
+        ref={(e) => {
+          inputRef.current = e
+          if (inputRefFromProps?.current) {
+            inputRefFromProps.current = e
+          }
+        }}
         tabIndex={-1}
         type="file"
         onChange={(e) => {
