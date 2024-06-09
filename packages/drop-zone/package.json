@@ -1,0 +1,29 @@
+{
+  "name": "@image-saas/drop-zone",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "dist/drop-zone.cjs",
+  "module": "dist/drop-zone.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build-dts": "tsup lib/index.ts --dts-only --format esm",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "@uppy/core": "^3.12.0",
+    "preact": "^10.19.1"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.6.0",
+    "@uppy/core": "^3.12.0",
+    "preact": "^10.19.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  }
+}
