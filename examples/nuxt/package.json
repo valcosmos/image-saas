@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@image-saas/api": "workspace:*",
+    "@image-saas/drop-zone": "workspace:*",
     "@image-saas/preact-vue-connect": "workspace:*",
     "@image-saas/upload-button": "workspace:*",
     "@image-saas/uploader": "workspace:*",

@@ -1,8 +1,9 @@
+<script setup>
+
+</script>
+
 <template>
   <div>
-<Index></Index>
+    <Comp />
   </div>
 </template>
-<script setup>
-import Index from './app/index.vue'
-</script>

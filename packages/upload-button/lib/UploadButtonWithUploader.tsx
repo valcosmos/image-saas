@@ -4,7 +4,7 @@ import type { UploadCompleteCallback, UploadSuccessCallback, UppyFile } from '@u
 import { useRef } from 'preact/hooks'
 import { UploadButton, type UploadButtonProps } from '.'
 
-export default function UploadButtonWithUploader({ uploader, onFileUploaded, ...uploadButtonProps }: { uploader: Uppy, onFileUploaded: (url: string, file: UppyFile) => void } & UploadButtonProps) {
+export function UploadButtonWithUploader({ uploader, onFileUploaded, ...uploadButtonProps }: { uploader: Uppy, onFileUploaded: (url: string, file: UppyFile) => void } & UploadButtonProps) {
   function onFiles(files: File[]) {
     uploader.addFiles(files.map(file => ({ data: file })))
     uploader.upload()

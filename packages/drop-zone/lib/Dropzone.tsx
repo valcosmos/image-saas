@@ -1,22 +1,29 @@
-import type Uppy from '@uppy/core'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import type { HTMLAttributes, ReactNode } from 'preact/compat'
-import { useRef, useState } from 'preact/hooks'
-import { useEffect } from 'react'
 
 interface CommonPreactComponentProps {
   setChildrenContainer: (ele: HTMLElement | null) => void
 }
 
-export type DropzoneProp = {
-  // uploader: Uppy
-  children: ReactNode | ((draging: boolean) => ReactNode)
-  onFileClosed: (file: File[]) => void
+export type DropzoneProps = {
   onDraggingChange: (dragging: boolean) => void
-} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> & CommonPreactComponentProps
+  onFileChosed: (files: File[]) => void
+  children: ReactNode | ((draging: boolean) => ReactNode)
+} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> &
+CommonPreactComponentProps
 
-export function Dropzone({ children, onFileClosed, onDraggingChange, setChildrenContainer, ...divProps }: DropzoneProp) {
+export function Dropzone({
+  children,
+  setChildrenContainer,
+  onDraggingChange,
+  onFileChosed,
+  ...divProps
+}: DropzoneProps) {
   const [darging, setDragging] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  console.log(darging, setDragging)
+  console.log('-->', onDraggingChange)
 
   useEffect(() => {
     onDraggingChange(darging)
@@ -24,7 +31,9 @@ export function Dropzone({ children, onFileClosed, onDraggingChange, setChildren
 
   return (
     <div
-      ref={e => setChildrenContainer(e)}
+      ref={(e) => {
+        setChildrenContainer(e)
+      }}
       {...divProps}
       onDragEnter={(e) => {
         e.preventDefault()
@@ -49,13 +58,13 @@ export function Dropzone({ children, onFileClosed, onDraggingChange, setChildren
       }}
       onDrop={(e) => {
         e.preventDefault()
-        const files = e.dataTransfer.files ? Array.from(e.dataTransfer.files) : []
-        onFileClosed(files)
-
+        const files = e.dataTransfer?.files
+          ? Array.from(e.dataTransfer.files)
+          : []
+        onFileChosed(files)
         setDragging(false)
       }}
     >
-      {typeof children === 'function' ? children(darging) : children}
     </div>
   )
 }
