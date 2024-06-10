@@ -2,11 +2,11 @@
 
 import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MoveDown, MoveUp, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useUppyState } from '../../useUppyState'
-import { trpcPureClient } from '@/utils/api'
+import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 import { UploadButton } from '@/components/feature/UploadButton'
 import { Dropzone } from '@/components/feature/Dropzone'
@@ -16,6 +16,20 @@ import FileList from '@/components/feature/FileList'
 import type { FileOrderByColumn } from '@/server/routes/file'
 
 export default function AppPage({ params: { id: appId } }: { params: { id: string } }) {
+  const { data: apps, isPending } = trpcClientReact.apps.listApps.useQuery(void 0, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
+
+  const currentApp = apps?.filter(app => app.id === appId)[0]
+
+  // useEffect(() => {
+  //   if (!currentApp && !isPending) {
+
+  //   }
+  //  },[])
+
   const [uppy] = useState(() => {
     const uppy = new Uppy()
     uppy.use(AWSS3, {
@@ -47,6 +61,24 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
   // const uppyFiles = useUppyState(uppy, s => s.files)
 
   const [orderBy, setOrderBy] = useState<Exclude<FileOrderByColumn, undefined>>({ field: 'createdAt', order: 'desc' })
+
+  if (isPending)
+    return <div>Loading...</div>
+  if (!currentApp) {
+    return (
+      <div className="flex flex-col mt-10 p-4 border rounded max-w-48 mx-auto items-center">
+        <p className="text-lg">App Not Exist</p>
+        <p className="text-sm">Choose another one</p>
+        <div className="flex flex-col gap-4 items-center">
+          {apps?.map(app => (
+            <Button key={app.id} asChild variant="link">
+              <Link href={`/dashboard/apps/${app.id}`}>{app.name}</Link>
+            </Button>
+          ))}
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="mx-auto h-screen">
       <div className="container flex justify-between items-center mb-4 h-[60px]">
