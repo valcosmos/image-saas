@@ -68,7 +68,7 @@ export default defineComponent({
           uploader={uploader}
           class-name="dropzone"
         >
-          <div className={dropzoneInnerClass.value}>
+          <div class={dropzoneInnerClass.value}>
             { dragging.value ? 'Drop Here to Upload' : 'Drag File Here' }
           </div>
         </VueDropzone>
@@ -79,7 +79,7 @@ export default defineComponent({
             </button>
             <div class="preview-overlay" />
             <div class="preview-content">
-              <img src={uploaded} />
+              <img src={uploaded.value} />
             </div>
           </div>
         ) }
