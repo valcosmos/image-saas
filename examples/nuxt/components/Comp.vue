@@ -1,7 +1,6 @@
 <script lang="tsx">
 import { createApiClient } from '@image-saas/api'
 import { UploadButtonWithUploader } from '@image-saas/upload-button'
-import { h, render } from 'preact'
 import { connect } from '@image-saas/preact-vue-connect'
 import { createUploader } from '@image-saas/uploader'
 import { DropzoneWithUploader } from '@image-saas/drop-zone'

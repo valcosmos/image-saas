@@ -1,7 +1,6 @@
 import type { MutableRef } from 'preact/hooks'
 import { useRef } from 'preact/hooks'
 import type { HTMLAttributes } from 'preact/compat'
-import type { Ref } from 'preact'
 
 interface CommonPreactComponentProps {
   setChildrenContainer: (ele: HTMLElement | null) => void

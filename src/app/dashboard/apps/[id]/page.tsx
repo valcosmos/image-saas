@@ -2,7 +2,7 @@
 
 import { Uppy } from '@uppy/core'
 import AWSS3 from '@uppy/aws-s3'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { MoveDown, MoveUp, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useUppyState } from '../../useUppyState'

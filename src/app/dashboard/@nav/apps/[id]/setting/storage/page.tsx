@@ -2,18 +2,20 @@
 
 import React from 'react'
 import Link from 'next/link'
+
+import { BreadCrumb } from '../breadcrumb'
 import { trpcClientReact } from '@/utils/api'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/DropdownMenu'
 import { Button } from '@/components/ui/Button'
 
 export default function AppDashboardNav({ params: { id } }: { params: { id: string } }) {
-  const { data: apps, isPending } = trpcClientReact.apps.listApps.useQuery()
+  // const { data: apps, isPending } = trpcClientReact.apps.listApps.useQuery()
 
-  const currentApp = apps?.filter(app => app.id === id)[0]
+  // const currentApp = apps?.filter(app => app.id === id)[0]
 
   return (
     <div className="flex justify-between items-center">
-      <DropdownMenu>
+      {/* <DropdownMenu>
         <DropdownMenuTrigger>
           <Button variant="ghost" asChild>
             <span>{ isPending ? 'loading...' : currentApp ? currentApp.name : '...' }</span>
@@ -35,11 +37,12 @@ export default function AppDashboardNav({ params: { id } }: { params: { id: stri
           })
         }
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu> */}
 
-      <div>
+      <BreadCrumb id={id} leaf="Storage" />
+      {/* <div>
         /storage
-      </div>
+      </div> */}
     </div>
   )
 }

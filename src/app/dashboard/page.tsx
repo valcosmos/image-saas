@@ -1,8 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ThemeProvider } from './ThemeProvider'
 import { trpcClientReact } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 
@@ -38,7 +36,7 @@ export default function DashboardAppList() {
                 <Button asChild variant="destructive">
                   <Link href={`/dashboard/apps/${app.id}`}>
                     Go
-                    </Link>
+                  </Link>
                 </Button>
               </div>
             </div>

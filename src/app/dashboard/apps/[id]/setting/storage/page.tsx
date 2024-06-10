@@ -1,6 +1,7 @@
 'use client'
 import { Plus } from 'lucide-react'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
 
@@ -26,11 +27,16 @@ export default function StoragePage({ params: { id } }: { params: { id: string }
     <div className="container pt-10">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl">Storage</h1>
-        <Button onClick={() => {
+        {/* <Button onClick={() => {
           redirect(`/dashboard/apps/${id}/new`)
         }}
         >
           <Plus />
+        </Button> */}
+        <Button asChild>
+          <Link href={`/dashboard/apps/${id}/setting/storage/new`}>
+            <Plus />
+          </Link>
         </Button>
       </div>
 

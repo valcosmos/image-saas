@@ -116,9 +116,9 @@ export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy
   }
 
   return (
-    <ScrollArea>
+    <ScrollArea className="h-full @container">
       {isPending && <div className="text-center">Loading...</div>}
-      <div className={cn('flex flex-wrap justify-center gap-4 relative container')}>
+      <div className={cn('grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 @2xl:grid-cols-4 gap-4 relative container')}>
         {uploadingFileIDs.length > 0 && uploadingFileIDs.map((id) => {
           const file = uppyFiles[id]
           // const isImage = file.data.type.startsWith('image')
@@ -138,7 +138,7 @@ export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy
           return (
             <div
               key={file.id}
-              className="relative w-56 h-80 flex justify-center items-center border"
+              className="relative w-56 h-80 flex justify-center items-center border overflow-hidden"
             >
               <div className="absolute inset-0 bg-background/30 justify-center items-center flex opacity-0 transition-all hover:opacity-100">
                 <CopyUrl url={file.url} />
