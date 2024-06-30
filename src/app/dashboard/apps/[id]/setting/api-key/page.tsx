@@ -1,10 +1,11 @@
 'use client'
-import { Plus } from 'lucide-react'
+import { Copy, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover'
 import { Input } from '@/components/ui/Input'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion'
 
 export default function ApiKeysPage({ params: { id } }: { params: { id: string } }) {
   const [newApiKeyName, setNewApiKeyName] = useState('')
@@ -52,14 +53,34 @@ export default function ApiKeysPage({ params: { id } }: { params: { id: string }
         </Popover>
       </div>
 
-      {apiKeys?.map((apiKey) => {
-        return (
-          <div key={apiKey.id} className="border p-4 flex justify-between items-center">
-            <span>{apiKey.name}</span>
-            <span>{apiKey.key}</span>
-          </div>
-        )
-      }) }
+      <Accordion type="single" collapsible>
+        {apiKeys?.map((apiKey) => {
+          return (
+            <AccordionItem key={apiKey.id} value={apiKey.id.toString()}>
+              <AccordionTrigger>{ apiKey.name }</AccordionTrigger>
+              <AccordionContent>
+                <div className="flex justify-between text-lg mb-4">
+                  <span>Client ID</span>
+                  <span>{ apiKey.clientId}</span>
+                </div>
+                <div className="flex justify-between text-lg mb-4">
+                  <span>Secret Key</span>
+                  <span>{apiKey.key}</span>
+                </div>
+                <Button className="w-full">
+                  <Copy />
+
+                  Copy
+                </Button>
+              </AccordionContent>
+            </AccordionItem>
+            // <div key={apiKey.id} className="border p-4 flex justify-between items-center">
+            //   <span>{apiKey.name}</span>
+            //   <span>{apiKey.key}</span>
+            // </div>
+          )
+        })}
+      </Accordion>
     </div>
   )
 }

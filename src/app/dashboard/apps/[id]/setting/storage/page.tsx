@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion'
 
 export default function StoragePage({ params: { id } }: { params: { id: string } }) {
   const { data: storages } = trpcClientReact.storages.listStorages.useQuery()
@@ -39,22 +40,42 @@ export default function StoragePage({ params: { id } }: { params: { id: string }
           </Link>
         </Button>
       </div>
-
-      {storages?.map((storage) => {
-        return (
-          <div key={storage.id} className="border p-4 flex justify-between items-center">
-            <span>{storage.name}</span>
-            <Button
-              disabled={storage.id === currentApp?.storageId}
-              onClick={() => {
-                mutate({ appId: id, storageId: storage.id })
-              }}
-            >
-              {storage.id === currentApp?.storageId ? 'Used' : 'Use' }
-            </Button>
-          </div>
-        )
-      }) }
+      <Accordion type="single" collapsible>
+        {storages?.map((storage) => {
+          return (
+            <AccordionItem key={storage.id} value={storage.id.toString()}>
+              <AccordionTrigger className={storage.id === currentApp?.storageId ? 'text-blue-600' : ''}>{storage.name}</AccordionTrigger>
+              <AccordionContent>
+                <div className="text-md space-y-2 text-gray-500">
+                  <div className="flex justify-between items-center">
+                    <span>region</span>
+                    <span>{ storage.configuration.region }</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>bucket</span>
+                    <span>{ storage.configuration.bucket }</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>apiEndpoint</span>
+                    <span>{ storage.configuration.apiEndpoint }</span>
+                  </div>
+                </div>
+              </AccordionContent>
+              {/* <div key={storage.id} className="border p-4 flex justify-between items-center">
+                <span>{storage.name}</span>
+                <Button
+                  disabled={storage.id === currentApp?.storageId}
+                  onClick={() => {
+                    mutate({ appId: id, storageId: storage.id })
+                  }}
+                >
+                  {storage.id === currentApp?.storageId ? 'Used' : 'Use' }
+                </Button>
+              </div> */}
+            </AccordionItem>
+          )
+        })}
+      </Accordion>
     </div>
   )
 }
