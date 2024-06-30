@@ -1,11 +1,33 @@
 'use client'
-import { Copy, Plus } from 'lucide-react'
+import { Copy, Eye, Plus } from 'lucide-react'
 import { useState } from 'react'
+import copy from 'copy-to-clipboard'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover'
 import { Input } from '@/components/ui/Input'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion'
+
+function KeyString({ id }: { id: number }) {
+  const { data: key } = trpcClientReact.apiKeys.requestKey.useQuery(id)
+
+  return (
+    <div className="flex justify-end items-center gap-2">
+      <span>{key}</span>
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={() => {
+          copy(key!.toString())
+          toast('secret key copied')
+        }}
+      >
+        <Copy />
+      </Button>
+    </div>
+  )
+}
 
 export default function ApiKeysPage({ params: { id } }: { params: { id: string } }) {
   const [newApiKeyName, setNewApiKeyName] = useState('')
@@ -26,6 +48,8 @@ export default function ApiKeysPage({ params: { id } }: { params: { id: string }
       })
     },
   })
+
+  const [showKeyMap, setShowKeyMap] = useState<Record<number, boolean>>({})
 
   return (
     <div className="pt-10">
@@ -61,17 +85,35 @@ export default function ApiKeysPage({ params: { id } }: { params: { id: string }
               <AccordionContent>
                 <div className="flex justify-between text-lg mb-4">
                   <span>Client ID</span>
-                  <span>{ apiKey.clientId}</span>
+                  <div className="flex justify-end items-center gap-2">
+                    <span>{apiKey.clientId}</span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        copy(apiKey.clientId)
+                        toast('client id copied')
+                      }}
+                    >
+                      <Copy />
+                    </Button>
+                  </div>
                 </div>
                 <div className="flex justify-between text-lg mb-4">
                   <span>Secret Key</span>
-                  <span>{apiKey.key}</span>
+                  {/* <span>{apiKey.key}</span> */}
+                  {
+                    !showKeyMap[apiKey.id] && (
+                      <Button onClick={() => setShowKeyMap(oldMap => ({ ...oldMap, [apiKey.id]: true }))}>
+                        <Eye />
+                      </Button>
+                    )
+                  }
+                  {
+                    showKeyMap[apiKey.id] && (<KeyString id={apiKey.id} />)
+                  }
                 </div>
-                <Button className="w-full">
-                  <Copy />
 
-                  Copy
-                </Button>
               </AccordionContent>
             </AccordionItem>
             // <div key={apiKey.id} className="border p-4 flex justify-between items-center">

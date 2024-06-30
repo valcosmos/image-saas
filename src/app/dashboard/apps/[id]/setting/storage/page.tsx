@@ -2,6 +2,7 @@
 import { Plus } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/Accordion'
@@ -24,6 +25,7 @@ export default function StoragePage({ params: { id } }: { params: { id: string }
   })
 
   const currentApp = apps?.filter(app => app.id === id)[0]
+
   return (
     <div className="container pt-10">
       <div className="flex justify-between items-center mb-6">
