@@ -14,7 +14,7 @@ import type { FileOrderByColumn } from '@/server/routes/file'
 
 type FileResult = inferRouterOutputs<AppRouter>['file']['listFiles']
 
-export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy: FileOrderByColumn, appId: string }) {
+export default function FileList({ uppy, orderBy, appId, onMakeUrl }: { uppy: Uppy, orderBy: FileOrderByColumn, appId: string, onMakeUrl: (id: string) => void }) {
   const queryKey = {
     limit: 10,
     orderBy,
@@ -123,11 +123,13 @@ export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy
           const file = uppyFiles[id]
           // const isImage = file.data.type.startsWith('image')
           // const url = URL.createObjectURL(file.data)
+
           return (
             <div
               key={file.id}
               className=" w-56 h-56 flex justify-center items-center border border-red-500"
             >
+
               <LocalFileItem file={file.data as File} />
             </div>
           )
@@ -135,13 +137,14 @@ export default function FileList({ uppy, orderBy, appId }: { uppy: Uppy, orderBy
 
         {filesList?.map((file) => {
           // const isImage = file.contentType.startsWith('image')
+
           return (
             <div
               key={file.id}
               className="relative w-56 h-80 flex justify-center items-center border overflow-hidden"
             >
               <div className="absolute inset-0 bg-background/30 justify-center items-center flex opacity-0 transition-all hover:opacity-100">
-                <CopyUrl url={file.url} />
+                <CopyUrl onClick={() => onMakeUrl(file.id)} url={file.url} />
                 <DeleteFile onDeleteSuccess={handleFileDelete} fileId={file.id} />
               </div>
               <RemoteFileItem contentType={file.contentType} id={file.id} name={file.name} />

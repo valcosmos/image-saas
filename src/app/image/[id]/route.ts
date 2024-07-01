@@ -58,7 +58,15 @@ export async function GET(request: NextRequest, { params: { id } }: { params: { 
   }
   const image = sharp(byteArray)
 
-  image.resize({ width: 250, height: 250 })
+  const query = new URL(request.url).searchParams
+
+  const width = Number.parseInt(query.get('width') || '250')
+  image.resize({ width })
+
+  const rotate = Number.parseInt(query.get('rotate') || '0')
+
+  image.rotate(rotate)
+
   const buffer = await image.webp().toBuffer()
 
   return new NextResponse(buffer, {

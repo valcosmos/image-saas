@@ -1,3 +1,4 @@
+import type { MouseEvent, MouseEventHandler } from 'react'
 import React from 'react'
 import { Copy, Trash2 } from 'lucide-react'
 import copy from 'copy-to-clipboard'
@@ -22,14 +23,15 @@ export function DeleteFile({ fileId, onDeleteSuccess }: { fileId: string, onDele
   )
 }
 
-export function CopyUrl({ url }: { url: string }) {
+export function CopyUrl({ onClick }: { url: string, onClick: (e: MouseEvent<HTMLButtonElement>) => void }) {
   return (
     <Button
       variant="ghost"
-      onClick={() => {
-        copy(url)
-        toast('Url Copied')
-      }}
+      onClick={onClick}
+      // onClick={() => {
+      //   copy(url)
+      //   toast('Url Copied')
+      // }}
     >
       <Copy />
     </Button>

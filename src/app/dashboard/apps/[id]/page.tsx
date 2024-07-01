@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { MoveDown, MoveUp, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useUppyState } from '../../useUppyState'
+import UrlMaker from './UrlMaker'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 import { UploadButton } from '@/components/feature/UploadButton'
@@ -14,6 +15,7 @@ import { usePasteFile } from '@/hooks/usePasteFile'
 import UploadPreview from '@/components/feature/UploadPreview'
 import FileList from '@/components/feature/FileList'
 import type { FileOrderByColumn } from '@/server/routes/file'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/Dialog'
 
 export default function AppPage({ params: { id: appId } }: { params: { id: string } }) {
   const { data: apps, isPending } = trpcClientReact.apps.listApps.useQuery(void 0, {
@@ -61,6 +63,7 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
   // const uppyFiles = useUppyState(uppy, s => s.files)
 
   const [orderBy, setOrderBy] = useState<Exclude<FileOrderByColumn, undefined>>({ field: 'createdAt', order: 'desc' })
+  const [makingUrlImageId, setMakingUrlImageId] = useState<string | null>(null)
 
   if (isPending)
     return <div>Loading...</div>
@@ -79,6 +82,7 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
       </div>
     )
   }
+
   return (
     <div className="mx-auto h-screen">
       <div className="container flex justify-between items-center mb-4 h-[60px]">
@@ -121,7 +125,7 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
                     </div>
                   )
                 }
-                <FileList appId={appId} orderBy={orderBy} uppy={uppy} />
+                <FileList appId={appId} orderBy={orderBy} uppy={uppy} onMakeUrl={id => setMakingUrlImageId(id)} />
               </>
             )
           }
@@ -134,6 +138,20 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
       })}
       {/* <div>{progress}</div> */}
       <UploadPreview uppy={uppy}></UploadPreview>
+      <Dialog
+        open={Boolean(makingUrlImageId)}
+        onOpenChange={(flag) => {
+          if (flag === false)
+            setMakingUrlImageId(null)
+        }}
+      >
+        <DialogContent className="max-w-4xl">
+          <DialogTitle>
+            Make URL
+          </DialogTitle>
+          {makingUrlImageId && <UrlMaker id={makingUrlImageId} />}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

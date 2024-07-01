@@ -61,6 +61,16 @@ export default function StoragePage({ params: { id } }: { params: { id: string }
                     <span>apiEndpoint</span>
                     <span>{ storage.configuration.apiEndpoint }</span>
                   </div>
+                  <div className="flex justify-between items-center">
+                    <Button
+                      className="w-full"
+                      onClick={() => {
+                        mutate({ appId: id, storageId: storage.id })
+                      }}
+                    >
+                      Use
+                    </Button>
+                  </div>
                 </div>
               </AccordionContent>
               {/* <div key={storage.id} className="border p-4 flex justify-between items-center">
