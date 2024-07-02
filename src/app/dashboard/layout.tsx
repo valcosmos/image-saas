@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { ThemeProvider } from './ThemeProvider'
 import { ThemeToggle } from './ThemeToggle'
+import Plan from './Plan'
 import { getServerSession } from '@/server/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/DropdownMenu'
@@ -17,10 +18,13 @@ export default async function DashboardLayout({ children, nav }: Readonly<{ chil
             <ThemeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage src={session.user.image!} />
-                  <AvatarFallback>{ session.user?.name?.substring(0, 2) }</AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <Avatar>
+                    <AvatarImage src={session.user.image!} />
+                    <AvatarFallback>{ session.user?.name?.substring(0, 2) }</AvatarFallback>
+                  </Avatar>
+                  <Plan />
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>{ session.user.name }</DropdownMenuLabel>

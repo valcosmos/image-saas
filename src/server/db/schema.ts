@@ -47,6 +47,7 @@ export const users = pgTable('user', {
   id: text('id').notNull().primaryKey(),
   name: text('name'),
   email: text('email').notNull(),
+  plan: text('plan', { enum: ['free', 'paid'] }),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
   createAt: date('create_at').defaultNow(),
