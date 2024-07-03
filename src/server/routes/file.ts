@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, isNull, sql } from 'drizzle-orm'
+import { and, asc, count, desc, eq, isNull, sql } from 'drizzle-orm'
 import z from 'zod'
 import type {
   PutObjectCommandInput,
@@ -10,7 +10,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { v4 as uuid } from 'uuid'
 import { TRPCError } from '@trpc/server'
-import { files } from '../db/schema'
+import { apps, files } from '../db/schema'
 import { db } from '../db/db'
 import { protectedProcedure, router } from '../trpc'
 import { filesCanOrderByColumns } from '../db/validate-schema'
@@ -55,6 +55,20 @@ export const fileRoutes = router({
 
       if (app.userId !== ctx.session.user.id)
         throw new TRPCError({ code: 'FORBIDDEN' })
+
+      const isFreePlan = ctx.plan === 'free'
+      const alreadyUploadedFilesCountResult = await db
+        .select({ count: count() })
+        .from(apps)
+        .where(and(eq(apps.id, app.id), isNull(apps.deletedAt)))
+
+      const countNum = alreadyUploadedFilesCountResult[0].count
+
+      if (isFreePlan && countNum >= 1) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+        })
+      }
 
       const storage = app.storage
 

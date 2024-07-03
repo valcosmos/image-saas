@@ -7,6 +7,7 @@ import { MoveDown, MoveUp, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useUppyState } from '../../useUppyState'
 import UrlMaker from './UrlMaker'
+import Upgrade from './Upgrade'
 import { trpcClientReact, trpcPureClient } from '@/utils/api'
 import { Button } from '@/components/ui/Button'
 import { UploadButton } from '@/components/feature/UploadButton'
@@ -32,17 +33,26 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
   //   }
   //  },[])
 
+  const [showUpgrade, setShowUpgrade] = useState(false)
+
   const [uppy] = useState(() => {
     const uppy = new Uppy()
     uppy.use(AWSS3, {
       shouldUseMultipart: false,
-      getUploadParameters(file) {
-        return trpcPureClient.file.createPresignedUrl.mutate({
-          filename: file.data instanceof File ? file.data.name : 'test',
-          contentType: file.data.type || '',
-          size: file.size,
-          appId,
-        })
+      async getUploadParameters(file) {
+        try {
+          const result = await trpcPureClient.file.createPresignedUrl.mutate({
+            filename: file.data instanceof File ? file.data.name : 'test',
+            contentType: file.data.type || '',
+            size: file.size,
+            appId,
+          })
+          return result
+        }
+        catch (error) {
+          setShowUpgrade(true)
+          throw error
+        }
       },
     })
     return uppy
@@ -138,6 +148,7 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
       })}
       {/* <div>{progress}</div> */}
       <UploadPreview uppy={uppy}></UploadPreview>
+      <Upgrade open={showUpgrade} onOpenChange={f => setShowUpgrade(f)} />
       <Dialog
         open={Boolean(makingUrlImageId)}
         onOpenChange={(flag) => {

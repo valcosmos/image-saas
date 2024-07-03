@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, isNull, sql } from 'drizzle-orm'
+import { and, asc, count, desc, eq, isNull, sql } from 'drizzle-orm'
 import z from 'zod'
 import type {
   PutObjectCommandInput,
@@ -10,7 +10,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { v4 as uuid } from 'uuid'
 import { TRPCError } from '@trpc/server'
-import { files } from '../db/schema'
+import { apps, files } from '../db/schema'
 import { db } from '../db/db'
 import { router, withAppProcedure } from '../trpc'
 import { filesCanOrderByColumns } from '../db/validate-schema'
@@ -46,7 +46,9 @@ export const fileOpenRoutes = router({
       //     storage: true,
       //   },
       // })
-      const { app } = ctx
+      const { app, user } = ctx
+
+      const isFreePlan = user.plan === 'free'
 
       if (!app || !app.storage) {
         throw new TRPCError({
@@ -56,6 +58,23 @@ export const fileOpenRoutes = router({
 
       if (app.userId !== ctx.user.id)
         throw new TRPCError({ code: 'FORBIDDEN' })
+
+      // const alreadyUploadedFilesCount = await db.query.files.findMany({
+      //   where: (apps, { eq, and, isNull }) => and(eq(apps.appId, app.id), isNull(apps.deletedAt)),
+      //   columns: {},
+      // })
+      const alreadyUploadedFilesCountResult = await db
+        .select({ count: count() })
+        .from(apps)
+        .where(and(eq(apps.id, app.id), isNull(apps.deletedAt)))
+
+      const countNum = alreadyUploadedFilesCountResult[0].count
+
+      if (countNum >= 1) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+        })
+      }
 
       const storage = app.storage
 

@@ -11,6 +11,8 @@ export default function Plan() {
   })
 
   return (
-    <span className="absolute right--1 top-0 bg-gray-100 rounded-md text-xs inline-block px-2">{ plan?.plan ?? '...' }</span>
+    <span className="absolute right--1 top-0 bg-gray-100 rounded-md text-xs inline-block px-2">
+      {plan?.plan ?? '...'}
+    </span>
   )
 }
