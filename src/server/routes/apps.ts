@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import { and, desc, eq } from 'drizzle-orm'
+import { and, count, desc, eq, isNull } from 'drizzle-orm'
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
 import { db } from '../db/db'
@@ -9,6 +9,20 @@ import { protectedProcedure, router } from '../trpc'
 
 export const appsRouter = router({
   createApp: protectedProcedure.input(createAppSchema.pick({ name: true, description: true })).mutation(async ({ ctx, input }) => {
+    const isFreePlan = ctx.plan
+
+    if (isFreePlan) {
+      const appsCountResult = await db.select({ count: count() }).from(apps).where(and(eq(apps.userId, ctx.session.user.id), isNull(apps.deletedAt)))
+
+      const appCount = appsCountResult[0].count
+
+      if (appCount >= 1) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+        })
+      }
+    }
+
     const result = await db.insert(apps).values({
       id: uuid(),
       name: input.name,

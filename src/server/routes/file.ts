@@ -57,17 +57,19 @@ export const fileRoutes = router({
         throw new TRPCError({ code: 'FORBIDDEN' })
 
       const isFreePlan = ctx.plan === 'free'
-      const alreadyUploadedFilesCountResult = await db
-        .select({ count: count() })
-        .from(apps)
-        .where(and(eq(apps.id, app.id), isNull(apps.deletedAt)))
 
-      const countNum = alreadyUploadedFilesCountResult[0].count
+      if (isFreePlan) {
+        const alreadyUploadedFilesCountResult = await db
+          .select({ count: count() })
+          .from(apps)
+          .where(and(eq(apps.id, app.id), isNull(apps.deletedAt)))
 
-      if (isFreePlan && countNum >= 1) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-        })
+        const countNum = alreadyUploadedFilesCountResult[0].count
+        if (countNum >= 1) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+          })
+        }
       }
 
       const storage = app.storage
