@@ -72,17 +72,17 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       drizzle-orm:
-        specifier: ^0.31.2
-        version: 0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+        specifier: ^0.31.4
+        version: 0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
       lucide-react:
-        specifier: ^0.402.0
-        version: 0.402.0(react@18.3.1)
+        specifier: ^0.404.0
+        version: 0.404.0(react@18.3.1)
       next:
         specifier: 14.2.4
         version: 14.2.4(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -209,7 +209,7 @@ importers:
         version: 9.0.2
       nuxt:
         specifier: ^3.11.2
-        version: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
+        version: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
       preact:
         specifier: ^10.19.1
         version: 10.19.2
@@ -3965,8 +3965,8 @@ packages:
     resolution: {integrity: sha512-VjI4wsJjk3hSqHSa3TwBf+uvH6M6pRHyxyoVbt935GUzP9tUR/BRZ+MhEJNgryqbzN2Za1KP0eJMTgKEPsalYQ==}
     hasBin: true
 
-  drizzle-orm@0.31.2:
-    resolution: {integrity: sha512-QnenevbnnAzmbNzQwbhklvIYrDE8YER8K7kSrAWQSV1YvFCdSQPzj+jzqRdTSsV2cDqSpQ0NXGyL1G9I43LDLg==}
+  drizzle-orm@0.31.4:
+    resolution: {integrity: sha512-VGD9SH9aStF2z4QOTnVlVX/WghV/EnuEzTmsH3fSVp2E4fFgc8jl3viQrS/XUJx1ekW4rVVLJMH42SfGQdjX3Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -3976,6 +3976,7 @@ packages:
       '@op-engineering/op-sqlite': '>=2'
       '@opentelemetry/api': ^1.4.1
       '@planetscale/database': '>=1'
+      '@prisma/client': '*'
       '@tidbcloud/serverless': '*'
       '@types/better-sqlite3': '*'
       '@types/pg': '*'
@@ -3991,6 +3992,7 @@ packages:
       mysql2: '>=2'
       pg: '>=8'
       postgres: '>=3'
+      prisma: '*'
       react: '>=18'
       sql.js: '>=1'
       sqlite3: '>=5'
@@ -4010,6 +4012,8 @@ packages:
       '@opentelemetry/api':
         optional: true
       '@planetscale/database':
+        optional: true
+      '@prisma/client':
         optional: true
       '@tidbcloud/serverless':
         optional: true
@@ -4040,6 +4044,8 @@ packages:
       pg:
         optional: true
       postgres:
+        optional: true
+      prisma:
         optional: true
       react:
         optional: true
@@ -5394,8 +5400,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-react@0.402.0:
-    resolution: {integrity: sha512-V2ModWMXzoZbQy4dhVUY4snrOplw+DwH0tsr8SLf8N0+irwO5okFcMS4eFHrXHttt24sLFZP3IJQo832o3fUWQ==}
+  lucide-react@0.404.0:
+    resolution: {integrity: sha512-8iYTmAG5dQWqYUEznRip2M7+KBKr7966bj3dqz0LJ8LUh5/sCIsKaJTEGdNTguLMRHTZy46sdqjrT3CupYqCeQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -9155,12 +9161,12 @@ snapshots:
 
   '@nuxt/devalue@2.0.2': {}
 
-  '@nuxt/devtools-kit@1.3.2(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))':
+  '@nuxt/devtools-kit@1.3.2(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))':
     dependencies:
       '@nuxt/kit': 3.11.2(rollup@4.18.0)
       '@nuxt/schema': 3.11.2(rollup@4.18.0)
       execa: 7.2.0
-      nuxt: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
+      nuxt: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
       vite: 5.2.11(@types/node@20.12.7)(terser@5.31.0)
     transitivePeerDependencies:
       - rollup
@@ -9179,10 +9185,10 @@ snapshots:
       rc9: 2.1.2
       semver: 7.6.2
 
-  '@nuxt/devtools@1.3.2(@unocss/reset@0.60.3)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))(vue@3.4.27(typescript@5.4.5))':
+  '@nuxt/devtools@1.3.2(@unocss/reset@0.60.3)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@antfu/utils': 0.7.8
-      '@nuxt/devtools-kit': 1.3.2(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
+      '@nuxt/devtools-kit': 1.3.2(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
       '@nuxt/devtools-wizard': 1.3.2
       '@nuxt/kit': 3.11.2(rollup@4.18.0)
       '@vue/devtools-applet': 7.2.1(@unocss/reset@0.60.3)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))(vue@3.4.27(typescript@5.4.5))
@@ -9203,7 +9209,7 @@ snapshots:
       launch-editor: 2.6.1
       local-pkg: 0.5.0
       magicast: 0.3.4
-      nuxt: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
+      nuxt: 3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))
       nypm: 0.3.8
       ohash: 1.1.3
       pacote: 18.0.6
@@ -11861,9 +11867,9 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.1
 
-  db0@0.1.4(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)):
+  db0@0.1.4(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)):
     optionalDependencies:
-      drizzle-orm: 0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
 
   debug@2.6.9:
     dependencies:
@@ -11980,7 +11986,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
       '@opentelemetry/api': 1.8.0
       '@types/react': 18.2.79
@@ -11988,9 +11994,9 @@ snapshots:
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.8
 
   duplexer@0.1.2: {}
@@ -13674,7 +13680,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@0.402.0(react@18.3.1):
+  lucide-react@0.404.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -13918,7 +13924,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  nitropack@2.9.6(@opentelemetry/api@1.8.0)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13):
+  nitropack@2.9.6(@opentelemetry/api@1.8.0)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.2
       '@netlify/functions': 2.7.0(@opentelemetry/api@1.8.0)
@@ -13941,7 +13947,7 @@ snapshots:
       cookie-es: 1.1.0
       croner: 8.0.2
       crossws: 0.2.4
-      db0: 0.1.4(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))
+      db0: 0.1.4(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))
       defu: 6.1.4
       destr: 2.0.3
       dot-prop: 8.0.2
@@ -14134,10 +14140,10 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)):
+  nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)):
     dependencies:
       '@nuxt/devalue': 2.0.2
-      '@nuxt/devtools': 1.3.2(@unocss/reset@0.60.3)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))(vue@3.4.27(typescript@5.4.5))
+      '@nuxt/devtools': 1.3.2(@unocss/reset@0.60.3)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(nuxt@3.11.2(@opentelemetry/api@1.8.0)(@parcel/watcher@2.4.1)(@types/node@20.12.7)(@unocss/reset@0.60.3)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)(eslint@9.6.0)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.18.0))(vue@3.4.27(typescript@5.4.5)))(ioredis@5.3.2)(optionator@0.9.3)(rollup@4.18.0)(terser@5.31.0)(typescript@5.4.5)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(rollup@4.18.0)(unocss@0.60.3(postcss@8.4.38)(rollup@4.18.0)(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0)))(vite@5.2.11(@types/node@20.12.7)(terser@5.31.0))(vue@3.4.27(typescript@5.4.5))
       '@nuxt/kit': 3.11.2(rollup@4.18.0)
       '@nuxt/schema': 3.11.2(rollup@4.18.0)
       '@nuxt/telemetry': 2.5.3(rollup@4.18.0)
@@ -14166,7 +14172,7 @@ snapshots:
       knitwork: 1.1.0
       magic-string: 0.30.10
       mlly: 1.6.1
-      nitropack: 2.9.6(@opentelemetry/api@1.8.0)(drizzle-orm@0.31.2(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)
+      nitropack: 2.9.6(@opentelemetry/api@1.8.0)(drizzle-orm@0.31.4(@opentelemetry/api@1.8.0)(@types/react@18.2.79)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(encoding@0.1.13)
       nuxi: 3.11.1
       nypm: 0.3.8
       ofetch: 1.3.4
