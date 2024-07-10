@@ -9,7 +9,11 @@ import { Button } from '@/components/ui/Button'
 import { trpcClientReact } from '@/utils/api'
 
 export default function Plan() {
-  const { mutate, isPending } = trpcClientReact.user.upgrade.useMutation()
+  const { mutate, isPending } = trpcClientReact.user.upgrade.useMutation({
+    onSuccess: (resp) => {
+      window.location.href = resp.url
+    },
+  })
 
   return (
     <div className="w-full max-w-6xl mx-auto py-12 md:py-24">
