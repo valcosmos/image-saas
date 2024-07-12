@@ -151,3 +151,17 @@ export const storageConfigurationRelation = relations(storageConfiguration, ({ o
 export const apiKeysRelation = relations(apiKeys, ({ one }) => ({
   app: one(apps, { fields: [apiKeys.appId], references: [apps.id] }),
 }))
+
+export const orders = pgTable('orders', {
+  sessionId: varchar('sessionId', { length: 255 }).primaryKey(),
+  status: varchar('status', { enum: ['created', 'canceled', 'completed'] }).notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
+  userId: text('id').notNull(),
+})
+
+export const ordersRelation = relations(orders, ({ one }) => ({
+  user: one(users, {
+    fields: [orders.userId],
+    references: [users.id],
+  }),
+}))

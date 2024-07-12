@@ -2,7 +2,7 @@ import process from 'node:process'
 import { Stripe } from 'stripe'
 import { TRPCError } from '@trpc/server'
 import { db } from '../db/db'
-import { users } from '../db/schema'
+import { orders, users } from '../db/schema'
 import { protectedProcedure, router } from '../trpc'
 
 export const userRouter = router({
@@ -14,7 +14,7 @@ export const userRouter = router({
 
     return result
   }),
-  upgrade: protectedProcedure.mutation(async () => {
+  upgrade: protectedProcedure.mutation(async ({ ctx }) => {
     const key = process.env.STRIPE_SECRET_API_KEY as string
     const stripe = new Stripe(key)
     const session = await stripe.checkout.sessions.create({
@@ -35,6 +35,12 @@ export const userRouter = router({
         code: 'INTERNAL_SERVER_ERROR',
       })
     }
+
+    await db.insert(orders).values({
+      sessionId: session.id,
+      userId: ctx.session.user.id,
+      status: 'created',
+    })
 
     return {
       url: session.url,
