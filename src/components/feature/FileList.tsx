@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import type Uppy from '@uppy/core'
-import type { UploadCallback, UploadSuccessCallback } from '@uppy/core'
+import type { Meta, Uppy } from '@uppy/core'
 import type { inferRouterOutputs } from '@trpc/server'
 import { Button } from '../ui/Button'
 import { ScrollArea } from '../ui/ScrollArea'
@@ -14,7 +13,7 @@ import type { FileOrderByColumn } from '@/server/routes/file'
 
 type FileResult = inferRouterOutputs<AppRouter>['file']['listFiles']
 
-export default function FileList({ uppy, orderBy, appId, onMakeUrl }: { uppy: Uppy, orderBy: FileOrderByColumn, appId: string, onMakeUrl: (id: string) => void }) {
+export default function FileList({ uppy, orderBy, appId, onMakeUrl }: { uppy: Uppy<Meta, Record<string, never>>, orderBy: FileOrderByColumn, appId: string, onMakeUrl: (id: string) => void }) {
   const queryKey = {
     limit: 10,
     orderBy,
@@ -60,7 +59,8 @@ export default function FileList({ uppy, orderBy, appId, onMakeUrl }: { uppy: Up
       }
     }
 
-    const uploadProgressHandler: UploadCallback = (data) => {
+    const uploadProgressHandler = (data) => {
+      console.log('--->', data)
       setUploadingFileIds(currentFile => [...currentFile, ...data.fileIDs])
     }
 

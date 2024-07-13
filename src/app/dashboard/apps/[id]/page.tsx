@@ -62,6 +62,7 @@ export default function AppPage({ params: { id: appId } }: { params: { id: strin
         }
       },
     })
+
     return uppy
   })
 
