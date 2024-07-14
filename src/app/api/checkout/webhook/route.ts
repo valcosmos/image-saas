@@ -9,34 +9,34 @@ const stripe = new Stripe(key)
 
 export async function POST(request: NextRequest) {
   const payload = await request.json()
-  const sig = request.headers.get('stripe-signature') as string
+
+  // const sig = request.headers.get('stripe-signature') as string
+
+  const payloadString = JSON.stringify(payload, null, 2)
+
+  const secret = process.env.STRIPE_ENDPOINT_SECRET!
+
+  const header = stripe.webhooks.generateTestHeaderString({
+    payload: payloadString,
+    secret,
+  })
 
   let event: Stripe.Event
 
   try {
-    event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_ENDPOINT_SECRET!)
+    event = stripe.webhooks.constructEvent(payloadString, header, secret)
   }
-  catch {
-    // return response.status(400).send(`Webhook Error: ${err.message}`)
+  catch (err) {
+    console.log('===>', `Webhook Error: ${err.message}`)
     return new Response('', {
       status: 400,
     })
   }
 
-  if (
-    event.type === 'checkout.session.completed'
-    || event.type === 'checkout.session.async_payment_succeeded'
-  ) {
+  if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
     // fulfillCheckout();
     const sessionId = event.data.object.id
 
-    // TODO: Make this function safe to run multiple times,
-    // even concurrently, with the same session ID
-
-    // TODO: Make sure fulfillment hasn't already been
-    // peformed for this Checkout Session
-
-    // Retrieve the Checkout Session from the API with line_items expanded
     const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ['line_items'],
     })
